@@ -1,0 +1,362 @@
+@page "/in"
+@using SuppliesRequisition.Data
+@using SuppliesRequisition.Model
+@inject SAPService sapService
+@inject IJSRuntime _runtime
+@inject NavigationManager _navigation
+
+<style>
+
+    .pagination-number {
+        border-radius: 2px;
+        width: 30px;
+        height: 30px;
+        margin: 0px 10px;
+        border: 1px solid #00A3AD;
+        color: #00A3AD;
+        background-color: none;
+    }
+
+    .pagination-next {
+        background-color: #fff;
+        border: none;
+    }
+
+        .pagination-next .icon-next {
+            height: 25px;
+            width: 20px;
+        }
+
+    .pagination-prev {
+        background-color: #fff;
+        border: none;
+    }
+
+        .pagination-prev .icon-prev {
+            height: 25px;
+            width: 20px;
+        }
+
+    .select-size {
+        color: #00A3AD;
+        margin-right: 10px;
+        border: 1px solid #00A3AD;
+    }
+
+    button.active {
+        background-color: #00A3AD;
+        color: #ffffff;
+    }
+</style>
+
+<div class="main-container">
+    <div class="main-container"></div>
+    <div></div>
+    <div></div>
+</div>
+<h3>Items List</h3>
+
+<input style="width:100%" id="search_input" name="search_input" type="text" placeholder="Search..." @bind="searchTerm" @oninput="FilterRecords" />
+
+@if (pagedItems == null || pagedItems.Count == 0)
+{
+    <p>No data available.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                @* @foreach (var header in headers)
+                {
+                    <th>@header</th>
+                } *@
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Size</th>
+                <th>Color</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in pagedItems)
+            {
+                <tr>
+                    <td>@item.ItemCode</td>
+                    <td>@item.ItemName</td>
+                    <td>@item.Size</td>
+                    <td>@item.Color</td>
+                </tr>
+        }*@
+
+            @foreach (var item in paginatedItems)
+            {
+                <tr>
+                    <td>@item.ItemCode</td>
+                    <td>@item.ItemName</td>
+                    <td>@item.Size</td>
+                    <td>@item.ChildColor</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+
+    <div class="col-span-2">
+        <div class="pagination">
+            <select class="select-size" @bind="pageSize" @oninput="PageSizeChanged">
+
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            @if (currentPage <= 1)
+            {
+                <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)" disabled>
+                    <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                    </svg>
+                </button>
+            }
+            else
+            {
+                <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)">
+                    <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" stroke-width="4" />
+                    </svg>
+                </button>
+            }
+            @* <label>Page @currentPage of @totalPages</label> *@
+            @foreach (int i in GetPagesToDisplay(totalPages, currentPage))
+            {
+                if (i == -1)
+                {
+                    <span style="width: 30px; height: 30px; margin-left: 10px;">...</span>
+                }
+                else
+                {
+                    <button @onclick="() => SelectPage(i)" class="@(i == currentPage ? "active" : "") pagination-number ">
+                        @i
+                    </button>
+                }
+            }
+            @if (currentPage >= totalPages)
+            {
+                <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)" disabled>
+                    <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                    </svg>
+                </button>
+            }
+            else
+            {
+                <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)">
+                    <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" stroke-width="4" />
+                    </svg>
+                </button>
+            }
+        </div>
+    </div>
+
+
+    <!-- Pagination Controls -->
+    @* <div class="pagination">
+        <button class="btn btn-primary" @onclick="PreviousPage" disabled="@IsFirstPage">Previous</button>
+        <span>Page @CurrentPage of @TotalPages</span>
+        <button class="btn btn-primary" @onclick="NextPage" disabled="@IsLastPage">Next</button>
+    </div> *@
+}
+
+@code {
+    private List<Items>? Items;
+    private List<Items>? pagedItems;
+    private bool isDataLoaded = false;
+    private string? positions, Scompany, SuserId;
+
+    private string[] headers = Array.Empty<string>();
+    private int PageSize = 20; // Number of rows per page
+    private int CurrentPage = 1;
+
+    private int TotalPages => Items == null ? 0 : (int)Math.Ceiling((double)Items.Count / PageSize);
+    private bool IsFirstPage => CurrentPage == 1;
+    private bool IsLastPage => CurrentPage == TotalPages;
+
+
+    private List<Items> filteredItemsTemp = null;
+    private List<Items>? filteredItems = new List<Items>();
+    private List<Items>? paginatedItems = new List<Items>();
+    private string? searchTerm;
+    private int currentPage = 1;
+    private int totalPages;
+    private int pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(_navigation.Uri);
+        var queryParams = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        if (queryParams.TryGetValue("username", out var username) && queryParams.TryGetValue("session_id", out var sessionId) && queryParams.TryGetValue("position", out var position) && queryParams.TryGetValue("company", out var company) && queryParams.TryGetValue("userId", out var userId))
+        {
+            await _runtime.InvokeVoidAsync("sessionStorage.setItem", "username", username.First());
+            await _runtime.InvokeVoidAsync("sessionStorage.setItem", "session_id", sessionId.First());
+            await _runtime.InvokeVoidAsync("sessionStorage.setItem", "position", position.First());
+            await _runtime.InvokeVoidAsync("sessionStorage.setItem", "company", company.First());
+            await _runtime.InvokeVoidAsync("sessionStorage.setItem", "userId", userId.First());
+
+        }
+
+        await LoadData();
+    }
+
+
+    private async Task LoadData()
+    {
+        // if(company == EPC){
+        //     Items = await Task.Run(() => sapService.ExecuteQuery("SELECT \"ItemCode\", \"ItemName\", \"ItmsGrpCod\", \"U_ID007\", \"U_ID011\" FROM OITM WHERE \"ItemCode\" LIKE '199%'"));
+        // }
+        Items = await Task.Run(() => sapService.ExecuteQuery("SELECT \"ItemCode\", \"ItemName\", \"ItmsGrpCod\", \"U_ID007\", \"U_ID011\" FROM OITM WHERE \"ItemCode\" LIKE '199%' OR \"ItemCode\" LIKE '299%'"));
+        // headers = new[] { "Item Code", "Item Name", "Item Group" };
+
+        paginatedItems = Items;
+
+        if (Items != null)
+        {
+            UpdatePagedItems();
+        }
+    }
+
+    private void UpdatePagedItems()
+    {
+        if (Items == null) return;
+
+        pagedItems = Items
+            .Skip((CurrentPage - 1) * PageSize)
+            .Take(PageSize)
+            .ToList();
+    }
+
+    private void NextPage()
+    {
+        if (!IsLastPage)
+        {
+            CurrentPage++;
+            UpdatePagedItems();
+        }
+    }
+
+    private void PreviousPage()
+    {
+        if (!IsFirstPage)
+        {
+            CurrentPage--;
+            UpdatePagedItems();
+        }
+    }
+
+
+    private void PageSizeChanged(ChangeEventArgs e)
+    {
+
+        pageSize = int.Parse((e.Value as string)?.Trim());
+        currentPage = 1;
+        ChangePage(1);
+    }
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        totalPages = (int)Math.Ceiling((double)filteredItems.Count / pageSize);
+        paginatedItems = filteredItems.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        StateHasChanged();
+    }
+
+    private async Task SelectPage(int selectedPage)
+    {
+        await ChangePage(selectedPage);
+    }
+
+    private IEnumerable<int> GetPagesToDisplay(int totalPages, int currentPage)
+    {
+        const int pagesToShow = 5;
+
+        if (totalPages <= pagesToShow)
+        {
+            return Enumerable.Range(1, totalPages);
+        }
+
+        var pages = new List<int>();
+
+        // Add the first two pages
+        pages.Add(1);
+        if (totalPages > 2)
+        {
+            pages.Add(2);
+        }
+
+        // Add a separator if necessary
+        if (currentPage > 4)
+        {
+            pages.Add(-1); // -1 represents the "..." separator
+        }
+
+        // Add the current page and its neighbors
+        var start = Math.Max(3, currentPage - 1);
+        var end = Math.Min(totalPages - 2, currentPage + 1);
+        for (int i = start; i <= end; i++)
+        {
+            pages.Add(i);
+        }
+
+        // Add a separator if necessary
+        if (currentPage < totalPages - 3)
+        {
+            pages.Add(-1); // -1 represents the "..." separator
+        }
+
+        // Add the last two pages
+        if (totalPages > 1)
+        {
+            pages.Add(totalPages - 1);
+        }
+        pages.Add(totalPages);
+
+        return pages;
+    }
+
+    private async Task FilterRecords(ChangeEventArgs e)
+    {
+        string searchTerm = (string)e.Value;
+        await FilterRecordsBySearchTerm(searchTerm);
+    }
+
+    private async Task FilterRecordsBySearchTerm(string searchTerm)
+    {
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            if (filteredItemsTemp == null)
+                filteredItems = Items.Where(pdf => pdf.ItemCode.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || pdf.ItemName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            else
+                filteredItems = filteredItemsTemp.Where(pdf => pdf.ItemCode.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || pdf.ItemName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            //await IJSRuntime.InvokeAsync<string>("console.log", "filteredPdfFilestemp", filteredItemsTemp);
+            //await IJSRuntime.InvokeAsync<string>("console.log", "filteredPdfFiles", filteredItems);
+            //await IJSRuntime.InvokeAsync<string>("console.log", "paginatedPdfFiles", paginatedItems);
+        }
+        else
+        {
+            if (filteredItemsTemp != null)
+                filteredItems = filteredItemsTemp.Where(pdf => pdf.ItemCode.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) || pdf.ItemName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+            else
+                filteredItems = Items;
+        }
+
+
+        Console.WriteLine($"Checked SQL: {filteredItems}");
+        await ChangePage(1);
+        StateHasChanged();
+    }
+
+}

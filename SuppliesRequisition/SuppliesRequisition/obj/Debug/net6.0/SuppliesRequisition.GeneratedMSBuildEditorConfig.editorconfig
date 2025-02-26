@@ -1,0 +1,109 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = SuppliesRequisition
+build_property.RootNamespace = SuppliesRequisition
+build_property.ProjectDir = Z:\PROJECTS\SuppliesRequisition\SuppliesRequisition\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = Z:\PROJECTS\SuppliesRequisition\SuppliesRequisition
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 6.0
+build_property.EnableCodeStyleSeverity = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/ConfirmApprovedModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlybUFwcHJvdmVkTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/ConfirmCancellationModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlybUNhbmNlbGxhdGlvbk1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/ConfirmDeniedModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29uZmlybURlbmllZE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/PrepareRequestModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJlcGFyZVJlcXVlc3RNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/Registration.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cmF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/RequestApproverModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdEFwcHJvdmVyTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/RequestDetailsModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdERldGFpbHNNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/RequestList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/RequestOperationsModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdE9wZXJhdGlvbnNNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/RequestorDetailsModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWVzdG9yRGV0YWlsc01vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/Requisition.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVxdWlzaXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/SubmitConfirmationModal.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VibWl0Q29uZmlybWF0aW9uTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-c098hk5ytp
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-aj0n53czbw
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[Z:/PROJECTS/SuppliesRequisition/SuppliesRequisition/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

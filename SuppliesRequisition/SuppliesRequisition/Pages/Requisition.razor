@@ -1,0 +1,687 @@
+@page "/requisition"
+@using SuppliesRequisition.Data
+@using SuppliesRequisition.Model
+@using System.Text
+@using MimeKit;
+@using MailKit.Net.Smtp;
+
+
+@inject ApplicationDbContext _dbcontext
+@inject SAPService _sapService
+@inject IJSRuntime _Runtime
+@inject IMyDataConnection _data
+@inject IConfiguration _config
+@inject NavigationManager _navigation
+
+<style>
+    .main-container {
+        display: grid;
+        width: 100%;
+        margin: auto;
+        border-radius: 4px;
+        box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+        -webkit-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+        -moz-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+    }
+    .header-container{
+        background-color: #00A3AD;
+        width: 100%;
+        height: 10px;
+    }
+    .body-container{
+        display: grid;
+        padding: 10px 10px;
+        gap: 10px;
+    }
+    .upload-memorandum {
+    font-size: 24px;
+    font-weight: bold;
+    }
+
+    .upload-memorandum .upload {
+    color: #00A3AD;
+    }
+
+    .upload-memorandum .memorandum {
+    color: #AA0061;
+    }
+    .input-form{
+        display: block;
+        width: 100%;
+        padding: 0px 5px;
+        border-radius: 2px;
+        border: 1px solid #ced4da;
+    }
+    .input-label{
+        font-size: 14px;
+        color: #7B7B7B;
+    }
+    .add-button {
+        border: 1px solid #00AA61;
+        background-color: #00AA61;
+        color: #FFF;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+        .add-button:hover {
+        background-color: #FFF;
+            color: #00AA61;
+        }
+
+        .add-button:disabled {
+            cursor: no-drop;
+        }
+
+    .submit-button {
+        border: 1px solid #00AA61;
+        background-color: #FFF;
+        color: #00AA61;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+        .submit-button:hover {
+            background-color: #00AA61;
+            color: #FFF;
+        }
+
+        .submit-button:disabled {
+            cursor: no-drop;
+        }
+
+    .remove-button {
+        border: 1px solid #AA0061;
+        background-color: #FFF;
+        color: #AA0061;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+
+        .remove-button:hover {
+            background-color: #AA0061;
+            color: #FFF;
+        }
+
+        .remove-button:disabled{
+            cursor:no-drop;
+        }
+
+    .select-input {
+        display: block;
+        padding: 3px 5px;
+        width: 100%;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ced4da;
+        border-radius: 2px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        .select-input:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .select-input:hover {
+            border-color: #80bdff;
+        }
+        .column-two {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 2fr));
+        gap: 10px;
+    }
+    /*NEW*/
+    .notification {
+        border-radius: 5px;
+        padding: 15px;
+        position: absolute;
+        width: max-content;
+        top: 0;
+        margin: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+
+    }
+    
+    /*NEW*/
+    .success {
+        background-color: #d4edda;
+        color: #00A3AD;
+        border: 1px solid #c3e6cb;
+    }
+
+    /*NEW*/
+    .error {
+        background-color: #f8d7da;
+        color: #AA0061;
+        border: 1px solid #f5c6cb;
+    }
+
+    /*NEW*/
+    .notification strong {
+        margin-right: 5px;
+    }
+
+    <!-- NEW -->
+    .loading-section {
+        text-align: center;
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0px;
+    }
+</style>
+
+<div class="main-container" >
+    <div class="header-container"></div>
+    <div class="body-container">
+        <div class="d-flex justify-content-between mt-3">
+                    <p class="upload-memorandum">
+                        <span class="upload">Office and Store</span>
+                        <span class="memorandum">Supplies Requisition Form</span>
+                    </p>
+        </div>
+
+        @if(!SuccessNotif){
+        <div class="column-two">
+                <div>
+                    <label class="input-label" for="SuserId">Requestor Name*</label>
+                    <input type="text" id="SuserId" class="input-form" @bind="SuserId" disabled />
+                </div>
+                <div>
+                    <label class="input-label" for="DateOfRequest">Date of Request*</label>
+                    <input type="text" id="DateOfRequest" class="input-form" value="@DateTime.Now.ToString("MM/dd/yyyy")" disabled />
+                </div>
+                <div>
+                    <label class="input-label" for="Department">Department*</label>
+                    <select id="Department" class="select-input" value="@Department" @onchange="OnDepartmentChanged">
+                        <option value="">-- Select --</option>
+                        @if (Scompany == "EPC")
+                        {
+                            <option value="EPCM">EPC MERCHANDISING</option>
+                            <option value="EPCS">EPC SALES</option>
+                        }
+                        else if (Scompany == "NBFI")
+                        {
+                            <option value="NBFIM">NBFI MERCHANDISING</option>
+                            <option value="NBFIS">NBFI SALES</option>
+                        }
+                        <option value="HR">HR</option>
+                        <option value="MARKETING">MARKETING</option>
+                        <option value="MIS">MIS</option>
+                        <option value="OPERATION">OPERATION</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="input-label" for="Approver">Approver*</label>
+                    <select id="Approver" class="select-input" @bind="Approver" disabled="@(string.IsNullOrEmpty(Department))">
+                        @if (Department != null)
+                        {
+                            @foreach (var app in approvers.Where(c => c.Department == Department))
+                            {
+                                <option value="@app.Name">@app.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+        </div>
+
+        <div>
+            <label>List of Items</label>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:15%;">Item Code</th>
+                        <th style="width:46%;">Item Description</th>
+                        <th style="width:10%;">Quantity</th>
+                        <th style="width:10%;">UOM</th>
+                        <th style="width:20%;">Remarks</th>
+                        <th style="width:14%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in rows)
+                    {
+                        <tr>
+                            <td>@row.ItemCode</td>
+                            <td>@row.ItemDescription</td>
+                            <td>@row.Quantity</td>
+                            <td>@row.StockUom</td>
+                            <td>@row.Remarks</td>
+                            @* <td>@row.Remarks</td> *@
+                            <td>
+                                <button class="remove-button"
+                                        @onclick="(() => RemoveRow(row))">
+                                    @* <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" class="ionicon" viewBox="0 0 512 512"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352" /><path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /></svg> *@
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            <input type="text" class="input-form" value="@selectedItem.ItemCode" readonly />
+                        </td>
+                        <td>
+                            <select class="select-input" value="@selectedItem.ItemName" @onchange="UpdateSelectedItem">
+                                @if (string.IsNullOrWhiteSpace(selectedItemDescription))
+                                {
+                                    <option value="">-- Select Item --</option>
+                                }
+                                @if (Items != null && Items.Any())
+                                {
+                                    @foreach (var item in Items)
+                                    {
+                                        string displaySize = (!item.ItemName.Contains($"({item.Size})") && item.Size != "Unspecified" && item.Size != null) ? $"({item.Size})" : "";
+                                        string displayColor = !string.IsNullOrWhiteSpace(item.ChildColor) ? $"({item.ChildColor})" : "";
+                                        string displayText = $"{item.ItemName} {displaySize} {displayColor}".Trim();
+
+                                        <option value="@item.ItemName">@displayText</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number"
+                            @bind="tempQuantity"
+                            class="input-form"
+                            oninput="if (this.value < 0) this.value = 0;" />
+                        </td>
+                        <td>
+                            <input type="text" class="input-form" value="@selectedItem.InvntryUom" readonly />
+                        </td>
+                        <td><input type="text" @bind="tempRemarks" class="input-form" /></td>
+                        <td>
+                            <button class="add-button" @onclick="AddNewRow" disabled="@(string.IsNullOrWhiteSpace(selectedItem.ItemName) || tempQuantity <= 0 || string.IsNullOrWhiteSpace(selectedItem.InvntryUom))">
+                                @* <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" height="20" width="20" viewBox="0 0 512 512"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176" /></svg> *@
+                                Add
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-center mt-3">
+            <!--<button class="btn btn-primary" @onclick="AddNewRow" disabled="@(rows.Any(row => row.UM == null || row.ItemDescription == null || row.Quantity <= 0))"> Add New Line </button>-->
+            <button class="submit-button" @onclick="SubmitRequisition"
+                    disabled="@(rows.Count == 0 || rows.Any(rows => rows.Quantity <= 0))">
+                Submit
+            </button>
+        </div>
+        } else {
+        <div class="loading-section">
+            <div class="spinner-grow" style="width: 3rem; height: 3rem; color: #00A3AD"></div>
+        </div>
+
+        }
+    </div>
+<!-- NEW -->
+@if (SuccessNotif)
+{
+    <div class="notification success">
+        <strong>Success!</strong><br /> Operation was completed successfully.
+    </div>
+}
+
+<!-- NEW -->
+@if (NoApproverNotif)
+{
+    <div class="notification error">
+        <strong>Error!</strong><br />Please specify Department.
+    </div>
+    
+}
+
+@if(NoDepartmentNotif){
+    <div class="notification error">
+        <strong>Error!</strong><br />Please specify the Approver.
+    </div>
+}
+</div>
+
+
+<SubmitConfirmationModal @ref="ConfirmSubmit" OnConfirm="SubmitRequisitions"></SubmitConfirmationModal>
+
+
+@code {
+    private string? RequestedBy { get; set; }
+    private string? Department { get; set; }
+    private string? Approver { get; set; }
+    private List<Items>? Items;
+    private List<TableRow> rows = new List<TableRow>();
+    private int headerId;
+    private List<Approvers>? approvers;
+    private List<AppUser>? users;
+    private string? email { get; set; }
+    private string? userEmail { get; set; }
+    private string? positions, Scompany, SuserId, Semail;
+    private bool isDataLoaded = false;
+
+    private string? tempItemCode { get; set; }
+    private string tempItemDescription { get; set; }
+    private int tempQuantity { get; set; }
+    private string tempUOM { get; set; }
+    private string tempRemarks {get; set;}
+
+    private SubmitConfirmationModal ConfirmSubmit;
+
+    private string selectedItemDescription = "";
+    private Items selectedItem = new Items();
+
+    private bool NoDepartmentNotif = false;
+    private bool NoApproverNotif = false;
+    private bool SuccessNotif = false;
+
+    private void UpdateSelectedItem(ChangeEventArgs e)
+    {
+        selectedItemDescription = e.Value?.ToString() ?? "";
+        // Find the selected item from the list
+        var foundItem = Items.FirstOrDefault(i => i.ItemName == selectedItemDescription);
+
+        if (foundItem != null)
+        {
+            // Force Blazor to recognize changes
+            selectedItem = new Items
+                {
+                    ItemCode = foundItem.ItemCode,
+                    ItemName = foundItem.ItemName,
+                    Size = foundItem.Size,
+                    ChildColor = foundItem.ChildColor,
+                    InvntryUom = foundItem.InvntryUom
+                };
+
+            StateHasChanged(); // Notify Blazor to refresh UI
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // await LoadData();
+            isDataLoaded = true;
+            // _sapService.Items = Items;
+
+            var sessionId = await _Runtime.InvokeAsync<string>("sessionStorage.getItem", "session_id");
+            positions = await _Runtime.InvokeAsync<string>("sessionStorage.getItem", "position");
+            Scompany = await _Runtime.InvokeAsync<string>("sessionStorage.getItem", "company");
+            SuserId = await _Runtime.InvokeAsync<string>("sessionStorage.getItem", "username");
+            Semail = await _Runtime.InvokeAsync<string>("sessionStorage.getItem", "email");
+            // Scompany = "EPC";
+            // SuserId = "Jake Longares";
+            // positions = "Admin";
+            _sapService.SAPCompany = Scompany;
+
+            Console.WriteLine($"Company: {Scompany}");
+            Console.WriteLine($"Name: {SuserId}");
+            Console.WriteLine($"Name: {positions}");
+
+
+            @* _sapService.Configure(
+                server: "HANASERVERNBFI:30015",
+                   user: "SYSTEM",
+                   password: "Sb1@nbfi",
+                   databaseNBFI: "Z_NBFI_SBOTEST",
+                   databaseEPC: "Z_EPC_SBOTEST",
+                company: Scompany
+            ); *@
+
+
+            string approverSql = $"SELECT * FROM approvertable";
+            approvers = (await _data.LoadData<Approvers, dynamic>(approverSql, new { headerId }, _config.GetConnectionString("DefaultConnection")));
+
+            string userSql = $"SELECT name, email FROM users WHERE name = '{SuserId}' AND position = '{positions}'";
+            users = await _data.LoadData<AppUser, dynamic>(userSql, new { }, _config.GetConnectionString("DefaultConnection"));
+
+            foreach(var us in users){
+                userEmail = us.Email;
+                Console.WriteLine($"User Email: {userEmail}");
+            }
+
+            await GetItem();
+            StateHasChanged(); // Force a re-render after data is loaded
+        }
+    }
+
+    private async Task GetItem()
+    {
+        string suppliesTable;
+        if (Scompany == "EPC" || Scompany == "AHLC")
+        {
+            suppliesTable = "epcsuppliesmaintenance";
+        }
+        else
+        {
+            suppliesTable = "nbfisuppliesmaintenance";
+        }
+
+        string allitemsql = $"SELECT ItemCode, ItemName, InvntryUom, U_ID007 as Size, U_ID011 as ChildColor FROM {suppliesTable} ORDER BY ItemName ASC";
+
+        Items = await _data.LoadData<Items, dynamic>(allitemsql, new { }, _config.GetConnectionString("DefaultConnection"));
+
+
+        // Items = await Task.Run(() => _sapService.ExecuteQuery("SELECT \"ItemCode\", \"ItemName\", \"ItmsGrpCod\", \"U_ID007\", \"U_ID011\", \"PriceUnit\" FROM OITM WHERE \"U_Dim2\" = '99' ORDER BY \"ItemName\" ASC"));
+
+        // foreach(var item in Items){
+        //     Console.WriteLine($@"Item Code: {item.ItemNo}
+        //                         Item Name: {item.ItemDescription}
+        //                         Size: {item.Size}
+        //                         Color: {item.ChildColor}
+        //                         Uom: {item.StockUom}");
+        // }
+    }
+
+    private void AddNewRow()
+    {
+
+        var newRow = new TableRow
+            {
+                ItemCode = selectedItem.ItemCode,
+                ItemDescription = selectedItem.ItemName,
+                Quantity = tempQuantity,
+                StockUom = selectedItem.InvntryUom,
+                Remarks = tempRemarks
+            };
+        rows.Add(newRow);
+
+        // Clear the input fields after adding
+        selectedItem.ItemCode = string.Empty;
+        selectedItem.ItemName = string.Empty;
+        tempQuantity = 0;
+        selectedItem.InvntryUom = string.Empty;
+        tempRemarks = string.Empty;
+
+
+        //=> rows.Add(new TableRow());
+    }
+
+    private void RemoveRow(TableRow row) 
+    {
+        rows.Remove(row);
+    }
+
+    private async Task SubmitRequisition()
+    {
+        ConfirmSubmit.OpenModal();
+    }
+
+    private async Task SubmitRequisitions()
+    {
+        if (string.IsNullOrEmpty(SuserId))
+        {
+            await _Runtime.InvokeVoidAsync("alert", "Please specify the department making the request.");
+            return;
+        }
+        if (Approver == null)
+        {
+            await _Runtime.InvokeVoidAsync("alert", "Please specify the approver making the request");
+            return;
+        }
+
+        foreach(var admin in approvers){
+            if(admin.Name == Approver){
+                email = admin.Email;
+            }
+        }
+
+        try{
+            Console.WriteLine($"Email of Approver: {email}");
+            // Insert into RequisitionHeaders
+            string headerSql = @"INSERT INTO RequisitionHeaders (RequestedBy, email, DateOfRequest, company, branchName, Approver, Status)
+                                VALUES (@RequestedBy, @email, @DateOfRequest, @company, @branchName, @Approver, @Status);
+                                SELECT LAST_INSERT_ID();";
+
+            // Console.WriteLine($"header quesry: {headerSql}");
+            var headerData = new
+            {
+                RequestedBy = SuserId,
+                DateOfRequest = DateTime.Now,
+                company = Scompany,
+                branchName = "Main",
+                Approver,
+                Status = "For Approval",
+                email = userEmail
+            };
+
+            var headerIds = await _data.LoadData<int, dynamic>(headerSql, headerData, _config.GetConnectionString("DefaultConnection"));
+            headerId = headerIds.FirstOrDefault();
+
+
+            // Insert into RequisitionDetails
+            string detailSql = @"INSERT INTO RequisitionDetails
+                            (HeaderId, ItemCode, ItemDescription, Quantity, UM, Consumption)
+                            VALUES
+                            (@HeaderId, @ItemCode, @ItemDescription, @Quantity, @StockUom, @Remarks);";
+
+            foreach (var row in rows)
+            {
+                var detailData = new
+                {
+                    HeaderId = headerId,
+                    row.ItemCode,
+                    row.ItemDescription,
+                    row.Quantity,
+                    row.StockUom,
+                    row.Remarks
+                };
+
+                await _data.SaveData(detailSql, detailData, _config.GetConnectionString("DefaultConnection"));
+            }
+
+            await _Runtime.InvokeVoidAsync("alert", "Requisition submitted successfully!");
+            rows.Clear(); // Clear the table after submission
+
+            await SendEmailAsync();
+        }
+        catch(Exception ex){
+            Console.WriteLine($"Error in saving: {ex.Message}");
+        }
+        
+    }
+
+
+    private RenderFragment ModalBodyContent => builder =>
+    {
+        builder.OpenElement(0, "p");
+        builder.AddContent(1, "Are you sure you want to remove?");
+        builder.CloseElement();
+    };
+
+    private async Task SendEmailAsync()
+    {
+
+        var emailBody = new StringBuilder();
+        emailBody.AppendLine($"<h3>Hi Ma'am/Sir {Approver}</h3>");
+        emailBody.AppendLine($"<p>Ms/Mr. {SuserId} request a supplies.</p>");
+        emailBody.AppendLine($"<p><strong>Date of Request:</strong> {DateTime.Now.ToString("MM/dd/yyyy")}</p>");
+        emailBody.AppendLine($"<h4><a href='http://192.168.0.7:8484/#/table-list/extended' target='_blank'>View Request Details</a></h4>");
+
+        var message = new MimeKit.MimeMessage();
+        message.From.Add(new MimeKit.MailboxAddress("Supplies Requisition", "mis@barbizonfashion.com"));
+        message.To.Add(new MimeKit.MailboxAddress($"{Approver}", "newbarbizon333@gmail.com"));
+        message.To.Add(new MimeKit.MailboxAddress($"{SuserId}", $"{email}"));
+        message.Subject = $"New Requisition (ID: {headerId})";
+        message.Body = new MimeKit.TextPart("html")
+            {
+                Text = emailBody.ToString()
+            };
+
+        using var client = new MailKit.Net.Smtp.SmtpClient();
+        try
+        {
+            await client.ConnectAsync("smtp-relay.brevo.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("mis@barbizonfashion.com", "TwJrNP0BM9zvVHkt");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email Sending Failed: {ex.Message}");
+        }
+    }
+
+    private async Task SelfEmail()
+    {
+
+        var emailBody = new StringBuilder();
+        emailBody.AppendLine($"<h3>Hi Ma'am/Sir {Approver}</h3>");
+        emailBody.AppendLine($"<p>Ms/Mr. {SuserId} request a supplies.</p>");
+        emailBody.AppendLine($"<p><strong>Date of Request:</strong> {DateTime.Now.ToString("MM/dd/yyyy")}</p>");
+        emailBody.AppendLine($"<h4><a href='http://192.168.0.7:8484/#/table-list/extended' target='_blank'>View Request Details</a></h4>");
+
+        var message = new MimeKit.MimeMessage();
+        message.From.Add(new MimeKit.MailboxAddress("Supplies Requisition", "mis@barbizonfashion.com"));
+        message.To.Add(new MimeKit.MailboxAddress("Recipient Name", "newbarbizon333@gmail.com"));
+        message.Subject = $"New Requisition (ID: {headerId})";
+        message.Body = new MimeKit.TextPart("html")
+            {
+                Text = emailBody.ToString()
+            };
+
+        using var client = new MailKit.Net.Smtp.SmtpClient();
+        try
+        {
+            await client.ConnectAsync("smtp-relay.brevo.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("mis@barbizonfashion.com", "TwJrNP0BM9zvVHkt");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email Sending Failed: {ex.Message}");
+        }
+    }
+
+    public class TableRow
+    {
+        public string? ItemCode { get; set; }
+        public string? ItemDescription { get; set; }
+        public int Quantity { get; set; } = 0;
+        public string? StockUom { get; set; }
+        public string? Consumption { get; set; }
+        public string? Remarks { get; set; }
+    }
+
+    // private async Task LoadData()
+    // {
+    //     Items = await Task.Run(() => _sapService.ExecuteQuery("SELECT \"ItemCode\", \"ItemName\", \"ItmsGrpCod\", \"U_ID007\", \"U_ID011\" FROM OITM WHERE \"ItemCode\" LIKE '199%' OR \"ItemCode\" LIKE '299%' ORDER BY \"ItemName\" ASC"));
+    // }
+
+    private void OnDepartmentChanged(ChangeEventArgs e)
+    {
+        Department = e.Value?.ToString();
+        var firstApprover = approvers.FirstOrDefault(c => c.Department == Department);
+        Approver = firstApprover?.Name; // Set the first approver if available
+    }
+}

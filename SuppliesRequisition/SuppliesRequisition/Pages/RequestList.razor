@@ -1,0 +1,1068 @@
+@page "/list"
+@using SuppliesRequisition.Data
+@using SuppliesRequisition.Model
+@using SuppliesRequisition.Pages
+
+@inject ApplicationDbContext _dbcontext
+@inject SAPService _sapService
+@inject IJSRuntime _runtime
+@inject IMyDataConnection _data
+@inject IConfiguration _config
+@inject NavigationManager _navigation
+@inject NavigationManager Navigation
+
+<style>
+    .main-container {
+    display: grid;
+    width: 100%;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+    -moz-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.10);
+    }
+
+    .header-container {
+    background-color: #00A3AD;
+    width: 100%;
+    height: 10px;
+    }
+
+    .body-container {
+    display: grid;
+    padding: 10px 10px;
+    gap: 10px;
+    }
+
+    .upload-memorandum {
+    font-size: 24px;
+    font-weight: bold;
+    }
+
+    .upload-memorandum .upload {
+    color: #00A3AD;
+    }
+
+    .upload-memorandum .memorandum {
+    color: #AA0061;
+    }
+    table {
+    width: 100%;
+    }
+
+    tr td {
+    font-size: 14px;
+    }
+
+    tr td a {
+    text-decoration: none
+    }
+
+    tr td a:hover {
+    color: #00A3AD;
+    font-weight: bold;
+    }
+
+    thead tr th {
+    padding: 4px 6px;
+    }
+
+    thead tr:hover {
+    background-color: white !important;
+    }
+
+    tbody tr td {
+    padding: 4px 6px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    }
+
+    tbody tr:hover {
+    background-color: #DEDEDE;
+    color: black;
+    }
+
+    td button {
+    border: none;
+    background-color: transparent;
+    }
+
+    td button:hover {
+    text-decoration: underline;
+    font-weight: bold;
+    }
+
+    .view-button {
+    padding: 2px 8px;
+    border: 1px solid #008CBA;
+    color: #FFFFFF;
+    border-radius: 2px;
+    background-color: #008CBA;
+    }
+
+    .view-button:hover {
+    background-color: #FFFFFF;
+    color: #008CBA;
+    text-decoration: none;
+    font-weight: normal;
+    fill: #008CBA;
+    }
+
+    .denied-button {
+    padding: 2px 8px;
+    border: 1px solid #AA0061;
+    color: #FFFFFF;
+    border-radius: 2px;
+    background-color: #AA0061;
+    }
+
+    .denied-button:hover {
+    background-color: #FFFFFF;
+    color: #AA0061;
+    text-decoration: none;
+    font-weight: normal;
+    fill: #AA0061;
+    }
+
+    .approve-button {
+    padding: 2px 8px;
+    border: 1px solid #00A3AD;
+    color: #FFFFFF;
+    border-radius: 2px;
+    background-color: #00A3AD;
+    }
+
+    .approve-button:hover {
+    background-color: #FFFFFF;
+    color: #00A3AD;
+    text-decoration: none;
+    font-weight: normal;
+    fill: #00A3AD;
+    }
+
+    .pending-status {
+    color: orange;
+    }
+
+    .preparing-status {
+    color: blue;
+    }
+
+    .completed-status{
+    color: #00A3AD;
+    }
+
+    .denied-status {
+    color: #AA0061;
+    }
+
+    .pagination-number {
+    border-radius: 2px;
+    width: 30px;
+    height: 30px;
+    margin: 0px 10px;
+    border: 1px solid #00A3AD;
+    color: #00A3AD;
+    background-color: none;
+    }
+
+    .pagination-next {
+    background-color: #fff;
+    border: none;
+    }
+
+    .pagination-next .icon-next {
+    height: 25px;
+    width: 20px;
+    }
+
+    .pagination-prev {
+    background-color: #fff;
+    border: none;
+    }
+
+    .pagination-prev .icon-prev {
+    height: 25px;
+    width: 20px;
+    }
+
+    .select-size {
+    color: #00A3AD;
+    margin-right: 10px;
+    border: 1px solid #00A3AD;
+    }
+
+    button.active {
+    background-color: #00A3AD;
+    color: #ffffff;
+    }
+
+    /*NEW*/
+    .notification {
+        border-radius: 5px;
+        padding: 15px;
+        position: absolute;
+        width: max-content;
+        top: 0;
+        margin: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+
+    }
+    
+    /*NEW*/
+    .success {
+        background-color: #d4edda;
+        color: #00A3AD;
+        border: 1px solid #c3e6cb;
+    }
+
+    /*NEW*/
+    .error {
+        background-color: #f8d7da;
+        color: #AA0061;
+        border: 1px solid #f5c6cb;
+    }
+
+    /*NEW*/
+    .notification strong {
+        margin-right: 5px;
+    }
+    
+</style>
+
+@if (header != null)
+{
+    <div class="main-container">
+        <div class="header-container"></div>
+
+        @if (positions == "User")
+        {
+            @*Requestor*@
+            <div class="body-container">
+                <div class="d-flex justify-content-between mt-3">
+                    <p class="upload-memorandum">
+                        <span class="upload">List of</span>
+                        <span class="memorandum">Requests (Requestor)</span>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <input style="width:100%" id="search_input" name="search_input" type="text" placeholder="Search..." @bind="searchTerm" @oninput="FilterRecords" />
+                    <br />
+                    <br />
+
+                    <table class="">
+                        <thead class="">
+                            <tr>
+                                <th style="width: 10%;">Request Number</th>
+                                <th style="width: 20%;">Date of Request</th>
+                                <th style="width: 30%;">Approver</th>
+                                <th style="width: 20%;">Status</th>
+                                <th style="width: 20%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in paginatedItems)
+                            {
+                                <tr>
+                                    <td>@request.HeaderId</td>
+                                    <td>@request.DateOfRequest.ToString("MMMM dd, yyyy")</td>
+                                    <td>@request.Approver</td>
+                                    <td class="@(request.Status.ToLower())-status ">@request.Status</td>
+                                    <td>
+                                        @{
+                                            var Position = "Requestor";
+                                        }
+                                        <button class="view-button" @onclick="() => ViewRequest(request, Position)">
+                                            <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M16.108 10.044c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.686 6-6-2.686-6-6-6zM16.108 20.044c-2.206 0-4.046-1.838-4.046-4.044s1.794-4 4-4c2.206 0 4 1.794 4 4s-1.748 4.044-3.954 4.044zM31.99 15.768c-0.012-0.050-0.006-0.104-0.021-0.153-0.006-0.021-0.020-0.033-0.027-0.051-0.011-0.028-0.008-0.062-0.023-0.089-2.909-6.66-9.177-10.492-15.857-10.492s-13.074 3.826-15.984 10.486c-0.012 0.028-0.010 0.057-0.021 0.089-0.007 0.020-0.021 0.030-0.028 0.049-0.015 0.050-0.009 0.103-0.019 0.154-0.018 0.090-0.035 0.178-0.035 0.269s0.017 0.177 0.035 0.268c0.010 0.050 0.003 0.105 0.019 0.152 0.006 0.023 0.021 0.032 0.028 0.052 0.010 0.027 0.008 0.061 0.021 0.089 2.91 6.658 9.242 10.428 15.922 10.428s13.011-3.762 15.92-10.422c0.015-0.029 0.012-0.058 0.023-0.090 0.007-0.017 0.020-0.030 0.026-0.050 0.015-0.049 0.011-0.102 0.021-0.154 0.018-0.090 0.034-0.177 0.034-0.27 0-0.088-0.017-0.175-0.035-0.266zM16 25.019c-5.665 0-11.242-2.986-13.982-8.99 2.714-5.983 8.365-9.047 14.044-9.047 5.678 0 11.203 3.067 13.918 9.053-2.713 5.982-8.301 8.984-13.981 8.984z"></path>
+                                            </svg>
+                                            View
+                                        </button>
+                                        @if (@request.Status == "Pending")
+                                        {
+                                            <button style="margin-left: 3px;" class="denied-button" @onclick="() => CancelRequest(request)">
+                                                <!--<button style="margin-left: 3px;" class="denied-button">-->
+                                                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <defs>
+                                                        <style>
+                                                            .cls-1 {
+                                                                fill-rule: evenodd;
+                                                            }
+                                                        </style>
+                                                    </defs>
+                                                    <path id="cancel" class="cls-1" d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z" transform="translate(-924 -96)" />
+                                                </svg>
+                                                Cancel Request
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="pagination">
+                        <select class="select-size" @bind="pageSize" @oninput="PageSizeChanged">
+
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        @if (currentPage <= 1)
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)" disabled>
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)">
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        @* <label>Page @currentPage of @totalPages</label> *@
+                        @foreach (int i in GetPagesToDisplay(totalPages, currentPage))
+                        {
+                            if (i == -1)
+                            {
+                                <span style="width: 30px; height: 30px; margin-left: 10px;">...</span>
+                            }
+                            else
+                            {
+                                <button @onclick="() => SelectPage(i)" class="@(i == currentPage ? "active" : "") pagination-number ">
+                                    @i
+                                </button>
+                            }
+                        }
+                        @if (currentPage >= totalPages)
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)" disabled>
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)">
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else if (positions == "Approver")
+        {
+            @*Approver*@
+            <div class="body-container">
+                <div class="d-flex justify-content-between mt-3">
+                    <p class="upload-memorandum">
+                        <span class="upload">List of</span>
+                        <span class="memorandum">Requests (Approver)</span>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <input style="width:100%" id="search_input" name="search_input" type="text" placeholder="Search..." @bind="searchTerm" @oninput="FilterRecords" />
+                    <br />
+                    <br />
+
+                    <table class="">
+                        <thead class="">
+                            <tr>
+                                <th style="width: 10%;">Request Number</th>
+                                <th style="width: 20%;">Requested By</th>
+                                <th style="width: 20%;">Date of Request</th>
+                                <th style="width: 10%;">Status</th>
+                                <th style="width: 20%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in paginatedItems)
+                            {
+                                if (request.Status != "Canceled" && request.Status != "Pending")
+                                {
+                                    <tr>
+                                        <td>@request.HeaderId</td>
+                                        <td>@request.RequestedBy</td>
+                                        <td>@request.DateOfRequest.ToString("MMMM dd, yyyy")</td>
+                                        <td class="@(request.Status.ToLower())-status ">@request.Status</td>
+                                        <td>
+                                            @{
+                                                var Position = "Approver";
+                                            }
+
+                                            <button class="view-button" @onclick="() => ViewRequest(request, Position)">
+                                                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16.108 10.044c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.686 6-6-2.686-6-6-6zM16.108 20.044c-2.206 0-4.046-1.838-4.046-4.044s1.794-4 4-4c2.206 0 4 1.794 4 4s-1.748 4.044-3.954 4.044zM31.99 15.768c-0.012-0.050-0.006-0.104-0.021-0.153-0.006-0.021-0.020-0.033-0.027-0.051-0.011-0.028-0.008-0.062-0.023-0.089-2.909-6.66-9.177-10.492-15.857-10.492s-13.074 3.826-15.984 10.486c-0.012 0.028-0.010 0.057-0.021 0.089-0.007 0.020-0.021 0.030-0.028 0.049-0.015 0.050-0.009 0.103-0.019 0.154-0.018 0.090-0.035 0.178-0.035 0.269s0.017 0.177 0.035 0.268c0.010 0.050 0.003 0.105 0.019 0.152 0.006 0.023 0.021 0.032 0.028 0.052 0.010 0.027 0.008 0.061 0.021 0.089 2.91 6.658 9.242 10.428 15.922 10.428s13.011-3.762 15.92-10.422c0.015-0.029 0.012-0.058 0.023-0.090 0.007-0.017 0.020-0.030 0.026-0.050 0.015-0.049 0.011-0.102 0.021-0.154 0.018-0.090 0.034-0.177 0.034-0.27 0-0.088-0.017-0.175-0.035-0.266zM16 25.019c-5.665 0-11.242-2.986-13.982-8.99 2.714-5.983 8.365-9.047 14.044-9.047 5.678 0 11.203 3.067 13.918 9.053-2.713 5.982-8.301 8.984-13.981 8.984z"></path>
+                                                </svg>
+                                                View
+                                            </button>
+                                            @if (@request.Status == "For Approval")
+                                            {
+                                                <button style="margin-left: 3px;" class="approve-button" @onclick="() => ApproveRequest(request)">
+                                                    <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <style>
+                                                                .cls-1 {
+                                                                    fill-rule: evenodd;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path id="accept" class="cls-1" d="M1008,120a12,12,0,1,1,12-12A12,12,0,0,1,1008,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,1008,98Zm-0.08,14.333a0.819,0.819,0,0,1-.22.391,0.892,0.892,0,0,1-.72.259,0.913,0.913,0,0,1-.94-0.655l-2.82-2.818a0.9,0.9,0,0,1,1.27-1.271l2.18,2.184,4.46-7.907a1,1,0,0,1,1.38-.385,1.051,1.051,0,0,1,.36,1.417Z" transform="translate(-996 -96)" />
+                                                    </svg>
+                                                    Approve
+                                                </button>
+                                                <button class="denied-button" @onclick="() => DeniedRequest(request)">
+                                                    <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <style>
+                                                                .cls-1 {
+                                                                    fill-rule: evenodd;
+                                                                }
+                                                            </style>
+                                                        </defs>
+                                                        <path id="cancel" class="cls-1" d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z" transform="translate(-924 -96)" />
+                                                    </svg>
+                                                    Denied
+                                                </button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="pagination">
+                        <select class="select-size" @bind="pageSize" @oninput="PageSizeChanged">
+
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        @if (currentPage <= 1)
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)" disabled>
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)">
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        @* <label>Page @currentPage of @totalPages</label> *@
+                        @foreach (int i in GetPagesToDisplay(totalPages, currentPage))
+                        {
+                            if (i == -1)
+                            {
+                                <span style="width: 30px; height: 30px; margin-left: 10px;">...</span>
+                            }
+                            else
+                            {
+                                <button @onclick="() => SelectPage(i)" class="@(i == currentPage ? "active" : "") pagination-number ">
+                                    @i
+                                </button>
+                            }
+                        }
+                        @if (currentPage >= totalPages)
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)" disabled>
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)">
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        
+
+        else if (positions == "Operations")
+        {
+            @*Operation*@
+            <div class="body-container">
+                <div class="d-flex justify-content-between mt-3">
+                    <p class="upload-memorandum">
+                        <span class="upload">List of</span>
+                        <span class="memorandum">Requests (Operations)</span>
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <input style="width:100%" id="search_input" name="search_input" type="text" placeholder="Search..." />
+                    <br />
+                    <br />
+
+                    <table class="">
+                        <thead class="">
+                            <tr>
+                                <th style="width: 10%;">Request Number</th>
+                                <th style="width: 20%;">Requested By</th>
+                                <th style="width: 20%;">Date of Request</th>
+                                <th style="width: 20%;">Approver</th>
+                                <th style="width: 10%;">Status</th>
+                                <th style="width: 20%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in paginatedItems)
+                            {
+                                if (request.Status == "Preparing" || request.Status == "Completed")
+                                {
+                                    <tr>
+                                        <td>@request.HeaderId</td>
+                                        <td>@request.RequestedBy</td>
+                                        <td>@request.DateOfRequest.ToString("MMMM dd, yyyy")</td>
+                                        <td>@request.Approver</td>
+                                        <td class="@(request.Status.ToLower())-status ">@request.Status</td>
+                                        <td>
+                                            @{
+                                                var Position = "Operations";
+                                            }
+                                            <button class="view-button" @onclick="() => ViewRequest(request, Position)">
+                                                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16.108 10.044c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.686 6-6-2.686-6-6-6zM16.108 20.044c-2.206 0-4.046-1.838-4.046-4.044s1.794-4 4-4c2.206 0 4 1.794 4 4s-1.748 4.044-3.954 4.044zM31.99 15.768c-0.012-0.050-0.006-0.104-0.021-0.153-0.006-0.021-0.020-0.033-0.027-0.051-0.011-0.028-0.008-0.062-0.023-0.089-2.909-6.66-9.177-10.492-15.857-10.492s-13.074 3.826-15.984 10.486c-0.012 0.028-0.010 0.057-0.021 0.089-0.007 0.020-0.021 0.030-0.028 0.049-0.015 0.050-0.009 0.103-0.019 0.154-0.018 0.090-0.035 0.178-0.035 0.269s0.017 0.177 0.035 0.268c0.010 0.050 0.003 0.105 0.019 0.152 0.006 0.023 0.021 0.032 0.028 0.052 0.010 0.027 0.008 0.061 0.021 0.089 2.91 6.658 9.242 10.428 15.922 10.428s13.011-3.762 15.92-10.422c0.015-0.029 0.012-0.058 0.023-0.090 0.007-0.017 0.020-0.030 0.026-0.050 0.015-0.049 0.011-0.102 0.021-0.154 0.018-0.090 0.034-0.177 0.034-0.27 0-0.088-0.017-0.175-0.035-0.266zM16 25.019c-5.665 0-11.242-2.986-13.982-8.99 2.714-5.983 8.365-9.047 14.044-9.047 5.678 0 11.203 3.067 13.918 9.053-2.713 5.982-8.301 8.984-13.981 8.984z"></path>
+                                                </svg>
+                                                View
+                                            </button>
+                                            @if (@request.Status == "Preparing")
+                                            {
+                                                <button style="margin-left: 3px;" class="approve-button" @onclick="() => GoToPrepare(request)">
+                                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11 6L13 8L17 4M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                    Prepare
+                                                </button>
+                                            }
+                                            else if(@request.Status == "Completed")
+                                            {
+                                                bool showButton = request.details.Any(item => string.IsNullOrWhiteSpace(item.SapStatus));
+
+                                                @if (showButton)
+                                                {
+                                                    <button style="margin-left: 3px;" class="approve-button" @onclick="() => GoToSAP(request)">
+                                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11 6L13 8L17 4M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </svg>
+                                                        Post to SAP
+                                                    </button>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="pagination">
+                        <select class="select-size" @bind="pageSize" @oninput="PageSizeChanged">
+
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        @if (currentPage <= 1)
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)" disabled>
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-prev" @onclick="() => ChangePage(currentPage - 1)">
+                                <svg class="icon-prev" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7.35169 27.7144L45.1028 3.73919C52.4262 -0.911806 62 4.34935 62 13.0248L62 60.9752C62 69.6507 52.4262 74.9118 45.1028 70.2608L7.35171 46.2857C0.547947 41.9647 0.547935 32.0353 7.35169 27.7144Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        @* <label>Page @currentPage of @totalPages</label> *@
+                        @foreach (int i in GetPagesToDisplay(totalPages, currentPage))
+                        {
+                            if (i == -1)
+                            {
+                                <span style="width: 30px; height: 30px; margin-left: 10px;">...</span>
+                            }
+                            else
+                            {
+                                <button @onclick="() => SelectPage(i)" class="@(i == currentPage ? "active" : "") pagination-number ">
+                                    @i
+                                </button>
+                            }
+                        }
+                        @if (currentPage >= totalPages)
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)" disabled>
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" fill="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="pagination-next" @onclick="() => ChangePage(currentPage + 1)">
+                                <svg class="icon-next" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M56.6483 46.2857L18.8972 70.2608C11.5738 74.9118 2 69.6507 2 60.9752L2 13.0248C2 4.34935 11.5738 -0.911817 18.8972 3.73917L56.6483 27.7143C63.452 32.0353 63.4521 41.9647 56.6483 46.2857Z" stroke="#00A3AD" stroke-width="4" />
+                                </svg>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+        <!-- NEW -->
+        @if (SuccessNotif)
+        {
+            <div class="notification success">
+                <strong>Success!</strong><br /> Operation was completed successfully.
+            </div>
+        }
+
+        <!-- NEW -->
+        @if (ErrorNotif)
+        {
+            <div class="notification error">
+                <strong>Error!</strong><br />Please specify Department.
+            </div>
+
+        }
+    </div>
+}
+else
+{
+    <div class="text-center mt-4">
+        <p class="text-muted">Loading...</p>
+    </div>
+}
+
+
+
+
+<RequestDetailsModal @ref="viewSelectedRequestDetails" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+<RequestApproverModal @ref="viewSelectedApproverRequestDetails" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+<RequestOperationsModal @ref="viewSelectedOperationsRequestDetails" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+<PrepareRequestModal @ref="selectedPreparationRequest" RequestItemDetails="requestDetails" OnCancel="CancelPreparation" />
+<PostSAP @ref="selectedPostSAP" RequestItemDetails="requestDetails" OnCancel="CancelPreparation" />
+
+<ConfirmCancellationModal @ref="selectedCancelRequest" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+<ConfirmDeniedModal @ref="selectedDeniedRequest" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+<ConfirmApprovedModal @ref="selectedApprovedRequest" RequestItemDetails="requestDetails" OnCancel="HandleCancel" />
+
+@code {
+    [Parameter]
+    public int HeaderId { get; set; }
+    private bool isModalOpen = false;
+    private int selectedHeaderId;
+    private int CurrentPage = 1;
+    private int PageSize = 10;
+    private bool IsFirstPage => CurrentPage == 1;
+
+    private RequestDetailsModal viewSelectedRequestDetails;
+    private RequestApproverModal viewSelectedApproverRequestDetails;
+    private RequestOperationsModal viewSelectedOperationsRequestDetails;
+    private PrepareRequestModal selectedPreparationRequest;
+    private PostSAP selectedPostSAP;
+
+    private ConfirmCancellationModal selectedCancelRequest;
+    private ConfirmDeniedModal selectedDeniedRequest;
+    private ConfirmApprovedModal selectedApprovedRequest;
+
+    private string? positions, Scompany, SuserId;
+    private List<RequisitionHeader>? header;
+    private List<RequisitionDetail>? details;
+    private List<AppUser>? users;
+    private string Sposition = "Operation";
+    private List<RequisitionHeader> requestItems = new List<RequisitionHeader>();
+    private RequisitionHeader requestDetails;
+    private List<RequisitionHeader> filteredItemsTemp = null;
+    private List<RequisitionHeader>? filteredItems = new List<RequisitionHeader>();
+    private List<RequisitionHeader>? paginatedItems = new List<RequisitionHeader>();
+    private string? searchTerm;
+    private int currentPage = 1;
+    private int totalPages;
+    private int pageSize = 10;
+
+    
+    private bool SuccessNotif = false;
+    private bool ErrorNotif = false;
+
+
+
+    // Nested classes
+    public class RequestItem
+    {
+        public int Id { get; set; }
+        public string RequestorName { get; set; }
+        public string DateRequested { get; set; }
+        public string ApproverName { get; set; }
+        public string Status { get; set; }
+        public List<RequestDetail> Items { get; set; } = new List<RequestDetail>();
+    }
+
+    public class RequestDetail
+    {
+        public string ItemDescription { get; set; }
+        public int Quantity { get; set; }
+        public string UOM { get; set; } // Unit of Measure
+        public string Remark { get; set; }
+        public string Note { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(_navigation.Uri);
+        var queryParams = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var sessionId = await _runtime.InvokeAsync<string>("sessionStorage.getItem", "session_id");
+            positions = await _runtime.InvokeAsync<string>("sessionStorage.getItem", "position");
+            Scompany = await _runtime.InvokeAsync<string>("sessionStorage.getItem", "company");
+            SuserId = await _runtime.InvokeAsync<string>("sessionStorage.getItem", "username");
+
+            // Query to fetch headers and populate details
+            string query = $@"SELECT
+                                h.HeaderId,
+                                h.RequestedBy,
+                                h.DateOfRequest,
+                                h.Approver,
+                                h.DateApprove,
+                                h.DateCompleted,
+                                h.Process,
+                                h.Status,
+                                d.DetailId,
+                                d.HeaderId AS DetailHeaderId,
+                                d.ItemCode,
+                                d.ItemDescription,
+                                d.Quantity,
+                                d.UOM,
+                                d.Consumption,
+                                d.Notes,
+                                d.SapStatus
+                            FROM
+                                requisitionheaders h
+                            LEFT JOIN
+                                requisitiondetails d
+                            ON
+                                h.HeaderId = d.HeaderId
+                            WHERE 
+                                h.company = '{Scompany}' AND h.branchName = 'Main'";
+
+            // Fetch data and group by HeaderId
+            var requisitionData = await _data.LoadData<dynamic, dynamic>(query, new { }, _config.GetConnectionString("DefaultConnection"));
+
+            // Group the data into headers with nested details
+            header = requisitionData
+                .GroupBy(x => new { x.HeaderId, x.RequestedBy, x.DateOfRequest, x.Approver, x.DateApprove, x.DateCompleted, x.Process, x.Status })
+                .Select(g => new RequisitionHeader
+                    {
+                        HeaderId = g.Key.HeaderId,
+                        RequestedBy = g.Key.RequestedBy,
+                        DateOfRequest = g.Key.DateOfRequest,
+                        Approver = g.Key.Approver,
+                        DateApprove = g.Key.DateApprove, // ✅ Include DateApproved 02-07-2025
+                        DateCompleted = g.Key.DateCompleted,   // ✅ Include CompleteDate 02-07-2025
+                        Process = g.Key.Process, // ✅ Include CompleteBy 02-07-2025
+                        Status = g.Key.Status,
+                        details = g
+                            .Where(x => x.DetailId != null)
+                            .Select(x => new RequisitionDetail
+                            {
+                                DetailId = x.DetailId,
+                                HeaderId = x.DetailHeaderId,
+                                ItemDescription = x.ItemDescription,
+                                Quantity = x.Quantity,
+                                UOM = x.UOM,
+                                Notes = x.Notes,
+                                Consumption = x.Consumption,
+                                SapStatus = x.SapStatus
+                            })
+                            .ToList()
+                    })
+                .ToList();
+
+            await FilterRecordsBySearchTerm(searchTerm);
+
+            StateHasChanged(); // Force a re-render after data is loaded
+        }
+    }
+
+    private void ShowDetails(int headerId)
+    {
+        selectedHeaderId = headerId;
+        isModalOpen = true;
+    }
+
+    private void CloseModal()
+    {
+        isModalOpen = false;
+    }
+
+    // Function to get status badge class
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Approved" => "bg-success",
+            "Pending" => "bg-warning text-dark",
+            "Disapproved" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    private void PreviousPage()
+    {
+        if (!IsFirstPage)
+        {
+            CurrentPage--;
+        }
+    }
+
+
+    private void ViewRequest(RequisitionHeader RequestDetails, string Position)
+    {
+
+        requestDetails = RequestDetails;
+        switch (Position)
+        {
+            case "Requestor":
+                // Console.WriteLine("User ID: " + Position);
+                viewSelectedRequestDetails.OpenModal(); // Call OpenModal correctly
+                break;
+
+            case "Approver":
+                // Console.WriteLine("User ID: " + Position);
+                viewSelectedApproverRequestDetails.OpenModal(); // Call OpenModal correctly
+                break;
+
+            case "Operations":
+                // Console.WriteLine("User ID: " + Position);
+                viewSelectedOperationsRequestDetails.OpenModal(); // Call OpenModal correctly
+                break;
+
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task HandleCancel(bool canceled)
+    {
+        requestDetails = null; // Reset the item to delete
+    }
+
+    private async Task CancelPreparation(bool canceled)
+    {
+        foreach(var item in requestDetails.details)
+        {
+            item.Notes = "";
+        }
+        requestDetails = null;
+    }
+
+    private void GoToPrepare(RequisitionHeader RequestDetails)
+    {
+        requestDetails = RequestDetails;
+        requestDetails.User = SuserId;
+        selectedPreparationRequest.OpenModal(); // Call OpenModal correctly
+    }
+
+    private void GoToSAP(RequisitionHeader RequestDetails)
+    {
+        requestDetails = RequestDetails;
+        selectedPostSAP.OpenModal(); // Call OpenModal correctly
+    }
+
+    private void CancelRequest(RequisitionHeader RequestDetails)
+    {
+        requestDetails = RequestDetails;
+        selectedCancelRequest.OpenModal();
+    }
+
+    private void NoCancel(bool canceled)
+    {
+        requestDetails = null;
+    }
+
+    private void DeniedRequest(RequisitionHeader RequestDetails)
+    {
+        requestDetails = RequestDetails;
+        requestDetails.Position = positions;
+        selectedDeniedRequest.OpenModal();
+    }
+
+    private void ApproveRequest(RequisitionHeader RequestDetails)
+    {
+        requestDetails = RequestDetails;
+        requestDetails.Position = positions;
+        selectedApprovedRequest.OpenModal();
+    }
+
+    private void PageSizeChanged(ChangeEventArgs e)
+    {
+
+        pageSize = int.Parse((e.Value as string)?.Trim());
+        currentPage = 1;
+        ChangePage(1);
+    }
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        totalPages = (int)Math.Ceiling((double)filteredItems.Count / pageSize);
+        paginatedItems = filteredItems.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        StateHasChanged();
+    }
+
+    private async Task SelectPage(int selectedPage)
+    {
+        await ChangePage(selectedPage);
+    }
+
+    private IEnumerable<int> GetPagesToDisplay(int totalPages, int currentPage)
+    {
+        const int pagesToShow = 5;
+
+        if (totalPages <= pagesToShow)
+        {
+            return Enumerable.Range(1, totalPages);
+        }
+
+        var pages = new List<int>();
+
+        // Add the first two pages
+        pages.Add(1);
+        if (totalPages > 2)
+        {
+            pages.Add(2);
+        }
+
+        // Add a separator if necessary
+        if (currentPage > 4)
+        {
+            pages.Add(-1); // -1 represents the "..." separator
+        }
+
+        // Add the current page and its neighbors
+        var start = Math.Max(3, currentPage - 1);
+        var end = Math.Min(totalPages - 2, currentPage + 1);
+        for (int i = start; i <= end; i++)
+        {
+            pages.Add(i);
+        }
+
+        // Add a separator if necessary
+        if (currentPage < totalPages - 3)
+        {
+            pages.Add(-1); // -1 represents the "..." separator
+        }
+
+        // Add the last two pages
+        if (totalPages > 1)
+        {
+            pages.Add(totalPages - 1);
+        }
+        pages.Add(totalPages);
+
+        return pages;
+    }
+
+    private async Task FilterRecords(ChangeEventArgs e)
+    {
+        string searchTerm = (string)e.Value;
+        await FilterRecordsBySearchTerm(searchTerm);
+    }
+
+    private async Task FilterRecordsBySearchTerm(string searchTerm)
+    {
+        
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            if (filteredItemsTemp == null)
+            {
+                filteredItems = positions switch
+                {
+                    "User" => header.Where(pdf =>
+                        (pdf.Approver.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.DateOfRequest.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.RequestedBy.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.Status.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.HeaderId.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        && pdf.RequestedBy == SuserId).ToList(),
+
+                    "Approver" => header.Where(pdf =>
+                        (pdf.RequestedBy.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.DateOfRequest.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.Approver.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.Status.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.HeaderId.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        && pdf.Approver == SuserId && pdf.Status != "Canceled").ToList(),
+
+                    "Operations" => header.Where(pdf =>
+                        (pdf.RequestedBy.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.DateOfRequest.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.Approver.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.Status.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                        || pdf.HeaderId.ToString().Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        && (pdf.Status == "Preparing" || pdf.Status == "Completed")).ToList(),
+
+                    _ => header.ToList() // Default case if `Sposition` does not match any defined roles
+                };
+            }
+        }
+        else
+        {
+            // Apply role-based filtering based on positions
+            filteredItems = positions switch
+            {
+                "User" => header.Where(a => a.RequestedBy == SuserId).ToList(),
+                "Approver" => header.Where(a => a.Approver == SuserId && a.Status != "Canceled").ToList(),
+                "Operations" => header.Where(a => a.Status == "Preparing" || a.Status == "Completed").ToList(),
+                _ => header.ToList()
+            };
+        }
+        await ChangePage(1);
+        StateHasChanged();
+    }
+}

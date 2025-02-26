@@ -1,0 +1,433 @@
+﻿@using SuppliesRequisition.Data
+@using SuppliesRequisition.Model
+@using SuppliesRequisition.Pages
+@using static SuppliesRequisition.Pages.RequestList
+
+@inject ApplicationDbContext _dbcontext
+@inject SAPService _sapService
+@inject IJSRuntime _runtime
+@inject IMyDataConnection _data
+@inject IConfiguration _config
+@inject NavigationManager _navigation
+@inject NavigationManager Navigation
+
+<style>
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    }
+
+    .close-button {
+    border: none;
+    background-color: #fff;
+    color: #000;
+    border-radius: 2px;
+    }
+
+    .close-button:hover {
+    color: #fff;
+    background-color: #AA0061;
+    }
+
+    .modal-view-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    border: 1px solid #888;
+    width: 60%;
+    }
+
+    .cancel-request-button {
+    padding: 2px 16px;
+    background-color: #fff;
+    border: 1px solid #AA0061;
+    color: #AA0061;
+    border-radius: 2px;
+    }
+
+    .cancel-request-button:hover {
+    background-color: #AA0061;
+    color: white;
+    }
+
+    p {
+    margin-bottom: 0px !important;
+    }
+
+    .input-label {
+    font-size: 14px;
+    color: #7B7B7B;
+    }
+
+    .column-number-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .pending-status {
+    color: orange;
+    }
+
+    .preparing-status {
+    color: blue;
+    }
+
+    .completed-status {
+    color: #00A3AD;
+    }
+
+    .denied-status {
+    color: #AA0061;
+    }
+</style>
+
+<div class="modal" style="@ModalStyle">
+    <div class="modal-view-content">
+        <div class="modal-header">
+            <p class="upload-memorandum">
+                <span class="upload">Good</span>
+                <span class="memorandum">Issue</span>
+            </p>
+            <button class="close-button" @onclick="Close">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            @if (RequestItemDetails != null && RequestItemDetails.details != null)
+            {
+
+                <div style="padding: 20px;">
+                    <div class="column-number-4">
+                        <div>
+                            <label class="input-label">Posting Date</label>
+                            <p>
+                                <input type="date" @bind="postingDate"/>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="input-label">Date of Request</label>
+                            <p>
+                                <input type="date" @bind="requestDate"/>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="input-label">Issue Type</label>
+                            <p>
+                                @* @selectedIssueType *@
+                                <select @onchange="UpdateAcctCode" value="@selectedIssueType">
+                                    <option value="">-- SELECT --</option>
+                                    <option value="OfficeSuppliesFinance">Finance</option>
+                                    <option value="OfficeSuppliesHR">HR</option>
+                                    <option value="OfficeSuppliesMIS">MIS</option>
+                                    <option value="OfficeSuppliesMPC">MPC</option>
+                                    <option value="OfficeSuppliesMerch">MERCH</option>
+                                    <option value="OfficeSuppliesMktg">MKTG</option>
+                                    <option value="OfficeSuppliesOP">Office of the President</option>
+                                    <option value="OfficeSuppliesOps">OPERATION</option>
+                                    <option value="OfficeSuppliesSales">SALES</option>
+                                </select>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="input-label">Remarks</label>
+                            <p><input type="text" /></p>
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th >Item Code</th>
+                                    <th >Item Description</th>
+                                    <th >Quantity</th>
+                                    <th >Account Code</th>
+                                    <th >WarehouseCode</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var row in rows){
+                                    <tr>
+                                        <td>
+                                            <p>@row.ItemCode</p>
+                                        </td>
+                                        <td>
+                                            <p>@row.ItemDescription</p>
+                                        </td>
+                                        <td>
+                                            <p>@row.Quantity</p>
+                                        </td>
+                                        <td>
+                                            <p>@row.AccountCode</p>
+                                        </td>
+                                        <td>
+                                            <p>@row.WarehouseCode</p>
+                                        </td>
+                                        <td>
+                                            <button class="remove-button"
+                                            @onclick="(() => RemoveRow(row))">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" class="ionicon" viewBox="0 0 512 512"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352" /><path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" /></svg>
+                                                Remove
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                }
+                                @if (RequestItemDetails.details.Any(i => i.SapStatus != "posted" && !rows.Any(r => r.ItemDescription == i.ItemDescription)))
+                                {
+                                <tr>
+                                    <td>
+                                        <p>@selectedItem.ItemCode</p>
+                                    </td>
+                                    <td>
+                                        
+                                            <select value="@selectedItem.ItemDescription" @onchange="SelectedItem">
+                                                <option value="">-- SELECT --</option>
+                                                @foreach (var item in RequestItemDetails.details.Where(i => i.SapStatus != "posted" && !rows.Any(r => r.ItemDescription == i.ItemDescription)))
+                                                {
+                                                    <option value="@item.ItemDescription">@item.ItemDescription</option>
+                                                }
+                                            </select>
+                                       
+                                    </td>
+                                    <td>
+                                        <input type="number" value="@selectedItem.Quantity"
+                                        @oninput="ValidateQuantity"
+                                        min="1"
+                                        max="@selectedItem.QuantityAvailable" />
+                                    </td>
+                                    <td>
+                                        <p>@acctCode</p>
+                                    </td>
+                                    <td>
+                                        <select @bind="selectedWhse">
+                                            <option value="01-SUPP">01-SUPP</option>
+                                            <option value="02-PCKG">02-PCKG</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                            <button class="approve-button" @onclick="AddNewRow" disabled="@(string.IsNullOrEmpty(selectedIssueType))">
+                                            Add
+                                        </button>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <div class="column-number-4">
+                        <div>
+                            <label class="input-label">Journal Remarks</label>
+                            <p>Goods Issue</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button class="approve-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" height="20" width="20" viewBox="0 0 512 512">
+                    <path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v160M336 256H176" />
+                </svg>
+                Post
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? RequestDetails { get; set; } // Ensure this is public
+    [Parameter] public RequisitionHeader? RequestItemDetails { get; set; } // Ensure this is public
+    [Parameter]
+    public RequisitionHeader? Request { get; set; }
+
+    [Parameter] public EventCallback<bool> OnConfirm { get; set; }
+    [Parameter] public EventCallback<bool> OnCancel { get; set; }
+
+    private string ModalStyle => ShowModal ? "display: block;" : "display: none;";
+    private bool ShowModal { get; set; }
+
+    public void OpenModal()
+    {
+        ShowModal = true;
+        StateHasChanged(); // Update the UI
+    }
+
+    private void Close()
+    {
+        OnCancel.InvokeAsync(false);
+        ShowModal = false;
+        // CloseModal();
+    }
+
+    private void Confirm()
+    {
+        OnConfirm.InvokeAsync(true);
+        // CloseModal();
+    }
+
+    private string? selectedIssueType { get; set; }
+    private string? acctCode { get; set; }
+    private string? selectedWhse { get; set; } = "01-SUPP";
+    private int quantity;
+    private DateTime postingDate = DateTime.UtcNow;
+    private DateTime requestDate = DateTime.UtcNow;
+
+    // protected override void OnInitialized()
+    // {
+    //         // Ensure RequestItemDetails is not null
+    //         if (RequestItemDetails?.details == null || !RequestItemDetails.details.Any())
+    //         {
+    //             Console.WriteLine("RequestItemDetails or details list is null or empty.");
+    //             selectedItem = new SelectedTable(); // Initialize to prevent null reference errors
+    //             return;
+    //         }
+
+    //         var availableItems = RequestItemDetails.details
+    //             .Where(i => i.SapStatus != "posted" && !rows.Any(r => r.ItemDescription == i.ItemDescription))
+    //             .ToList();
+
+    //         if (availableItems.Any())
+    //         {
+    //             selectedItem = new SelectedTable
+    //                 {
+    //                     ItemDescription = availableItems.First().ItemDescription,
+    //                     ItemCode = availableItems.First().ItemCode,
+    //                     QuantityAvailable = availableItems.First().Quantity, // Ensure QuantityAvailable is set
+    //                     Quantity = 1 // Default quantity to 1
+    //                 };
+    //         }
+       
+    //     StateHasChanged();
+    // }
+
+    private void UpdateAcctCode(ChangeEventArgs e)
+    {
+        selectedIssueType = e.Value?.ToString();
+
+        acctCode = selectedIssueType switch
+        {
+            "OfficeSuppliesFinance" => "608-110",
+            "OfficeSuppliesHR" => "608-140",
+            "OfficeSuppliesMIS" => "608-170",
+            "OfficeSuppliesMPC" => "800-160",
+            "OfficeSuppliesMerch" => "608-120",
+            "OfficeSuppliesMktg" => "608-130",
+            "OfficeSuppliesOP" => "608-100",
+            "OfficeSuppliesOps" => "608-150",
+            "OfficeSuppliesSales" => "608-160",
+            _ => ""
+        };
+
+        StateHasChanged();
+    }
+
+    private List<TableRow> rows = new List<TableRow>();
+
+    private string? tempItemDescription { get; set; }
+    private void AddNewRow()
+    {
+        if (!string.IsNullOrEmpty(selectedItem.ItemDescription))
+        {
+            var newRow = new TableRow
+                {
+                    ItemCode = selectedItem.ItemCode,
+                    ItemDescription = selectedItem.ItemDescription,
+                    Quantity = selectedItem.Quantity,
+                    AccountCode = acctCode,
+                    WarehouseCode = selectedWhse
+                };
+            rows.Add(newRow);
+        }
+
+        // Reset values to default
+        selectedItem.ItemCode = string.Empty;
+        selectedItem.ItemDescription = string.Empty; // Reset dropdown to "-- SELECT --"
+        selectedItem.Quantity = 0;
+    }
+
+    private void RemoveRow(TableRow row)
+    {
+        rows.Remove(row);
+    }
+
+    private SelectedTable selectedItem = new SelectedTable();
+    private void SelectedItem(ChangeEventArgs e)
+    {
+        tempItemDescription = e.Value?.ToString();
+
+        var foundItem = RequestItemDetails.details.FirstOrDefault(i => i.ItemDescription == tempItemDescription);
+
+        if(foundItem != null){
+            selectedItem = new SelectedTable
+            {
+                ItemCode = foundItem.ItemCode,
+                ItemDescription = foundItem.ItemDescription,
+                Quantity = foundItem.Quantity,
+                QuantityAvailable = foundItem.Quantity
+            };
+        }
+    }
+
+    private void ValidateQuantity(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int newQuantity))
+        {
+            if (newQuantity > selectedItem.Quantity)
+            {
+                selectedItem.Quantity = selectedItem.QuantityAvailable; // Set max limit
+            }
+            else if (newQuantity < 1)
+            {
+                selectedItem.Quantity = 1; // Set min limit
+            }
+            else
+            {
+                selectedItem.Quantity = newQuantity;
+            }
+        }
+    }
+
+    public class SelectedTable
+    {
+        public string? ItemCode { get; set; }
+        public string? ItemDescription { get; set; }
+        public int Quantity { get; set; } = 0;
+        public int QuantityAvailable { get; set; }
+    }
+
+    public class TableRow
+    {
+        public string? ItemCode { get; set; }
+        public string? ItemDescription { get; set; }
+        public int Quantity { get; set; } = 0;
+        public string? AccountCode { get; set; }
+        public string? WarehouseCode { get; set; }
+    }
+}

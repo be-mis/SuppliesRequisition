@@ -1,0 +1,53 @@
+﻿@page "/login"
+@using Microsoft.EntityFrameworkCore
+@using SuppliesRequisition.Data
+@inject ApplicationDbContext DbContext
+@inject NavigationManager Navigation
+@inject IJSRuntime _runtime
+
+<h3>Login</h3>
+
+<EditForm Model="@loginModel" OnValidSubmit="LoginUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Email:</label>
+        <InputText @bind-Value="loginModel.Email" type="email" class="form-control" />
+    </div>
+    <div>
+        <label>Password:</label>
+        <InputText @bind-Value="loginModel.Password" type="password" class="form-control" />
+    </div>
+    @errorMessage <br />
+    <button type="submit" class="btn btn-primary mt-2">Login</button>
+   
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new();
+    private string errorMessage = string.Empty;
+
+    private class LoginModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    private async Task LoginUser()
+    {
+        var user = await DbContext.AppUsers
+            .FirstOrDefaultAsync(u => u.Email == loginModel.Email && u.Password == loginModel.Password);
+
+        await _runtime.InvokeVoidAsync("sessionStorage.setItem", "id", user?.Id);
+
+        if (user == null)
+        {
+            errorMessage = "Invalid email or password.";
+        }
+        else
+        {
+            Navigation.NavigateTo("/"); // Navigate to a protected page
+        }
+    }
+}

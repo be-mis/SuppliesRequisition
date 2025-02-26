@@ -1,0 +1,189 @@
+﻿<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+
+    .modal-content-main {
+        margin: 5% auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, .2);
+        border-radius: .3rem;
+        outline: 0;
+        width: 20%;
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* Modal header and close button styles */
+    .modal-content h3 {
+        margin: auto;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .modal-header, .modal-footer {
+        /*background-color: #f2f2f2;*/
+        /*padding: 10px;*/
+        text-align: center;
+    }
+
+    .modal-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: white;
+        min-width: 100%;
+        overflow: hidden;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .close-button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .close-button:hover {
+            background-color: #0056b3;
+        }
+    .modal-content {
+        width: fit-content;
+    }
+
+    .yes-button {
+        padding: 2px 16px;
+        border: 1px solid #AA0061;
+        color: #AA0061;
+        border-radius: 2px;
+    }
+
+        .yes-button:hover {
+            background-color: #AA0061;
+            color: white;
+        }
+
+    .no-button {
+        padding: 2px 16px;
+        border: 1px solid #888;
+        color: #FFFFFF;
+        border-radius: 2px;
+        background-color: #888;
+    }
+
+        .no-button:hover {
+            background-color: #FFFFFF;
+            color: #888;
+        }
+    p {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+
+
+
+<div class="modal" style="@ModalStyle">
+    <div class="modal-content-main">
+
+        <div class="form-top"></div>
+        <div class="modal-header">
+
+            @* <p class="upload-memorandum">
+            <span class="upload">Adding </span>
+            <span class="memorandum">Branchssssss</span>
+            </p> *@
+            @* <span @onclick="CloseModal" class="close">&times;</span> *@
+        </div>
+        <div class="modal-body">
+            <div style="padding: 20px; display: flex">
+                @* @ModalBody *@
+                <p>Are you sure you want to submit the request?</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button @onclick="Confirm" class="yes-button">Yes</button>
+            <button @onclick="Cancel" class="no-button">No</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    //[Parameter] public string RequestDetails { get; set; } // Parameter to hold the data
+    [Parameter] public EventCallback<bool> OnConfirm { get; set; }
+    [Parameter] public EventCallback<bool> OnCancel { get; set; }
+
+    private string ModalStyle => ShowModal ? "display: block;" : "display: none;";
+    private bool ShowModal { get; set; }
+
+    public void OpenModal()
+    {
+        ShowModal = true;
+        StateHasChanged(); // Update the UI
+    }
+
+    public void CloseModal()
+    {
+        ShowModal = false;
+        StateHasChanged(); // Update the UI
+    }
+
+    private void Confirm()
+    {
+        OnConfirm.InvokeAsync(true);
+        CloseModal();
+    }
+
+    private void Cancel()
+    {
+        OnCancel.InvokeAsync(false);
+        CloseModal();
+    }
+
+}

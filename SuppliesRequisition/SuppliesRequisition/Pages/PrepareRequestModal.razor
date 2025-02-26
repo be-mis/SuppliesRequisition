@@ -1,0 +1,352 @@
+@using SuppliesRequisition.Data
+@using SuppliesRequisition.Model
+@using SuppliesRequisition.Pages
+@using static SuppliesRequisition.Pages.RequestList
+@using MimeKit;
+@using MailKit.Net.Smtp;
+@using System.Text
+
+@inject ApplicationDbContext _dbcontext
+@inject SAPService _sapService
+@inject IJSRuntime _runtime
+@inject IMyDataConnection _data
+@inject IConfiguration _config
+@inject NavigationManager _navigation
+@inject NavigationManager Navigation
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .close-button {
+        border: none;
+        background-color: #fff;
+        color: #000;
+        border-radius: 2px;
+    }
+
+        .close-button:hover {
+            color: #fff;
+            background-color: #AA0061;
+        }
+
+    .modal-view-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 1px solid #888;
+        width: 60%;
+    }
+
+    .cancel-request-button {
+        padding: 2px 16px;
+        background-color: #fff;
+        border: 1px solid #AA0061;
+        color: #AA0061;
+        border-radius: 2px;
+    }
+
+        .cancel-request-button:hover {
+            background-color: #AA0061;
+            color: white;
+        }
+
+    p {
+        margin-bottom: 0px !important;
+    }
+
+    .input-label {
+        font-size: 14px;
+        color: #7B7B7B;
+    }
+
+    .column-number-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .pending-status {
+        color: orange;
+    }
+
+    .preparing-status {
+        color: blue;
+    }
+
+    .completed-status {
+        color: #00A3AD;
+    }
+
+    .denied-status {
+        color: #AA0061;
+    }
+</style>
+
+<div class="modal" style="@ModalStyle">
+    <div class="modal-view-content">
+        <div class="modal-header">
+            <p class="upload-memorandum">
+                <span class="upload">Prepare</span>
+                <span class="memorandum">Request</span>
+            </p>
+            <button class="close-button" @onclick="Close">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            @if (RequestItemDetails != null && RequestItemDetails.details != null)
+            {
+
+                <div style="padding: 20px;">
+                    <div class="column-number-4">
+                        <div>
+                            <label class="input-label">Requestor Name</label>
+                            <p>@RequestItemDetails.RequestedBy</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Date of Request</label>
+                            <p>@RequestItemDetails.DateOfRequest</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Approver</label>
+                            <p>@RequestItemDetails.Approver</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Status</label>
+                            <p class="@(RequestItemDetails.Status.ToLower())-status ">@RequestItemDetails.Status</p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="column-number-4">
+                        <div>
+                            <label class="input-label">Date Approved</label>
+                            @if (RequestItemDetails?.DateApprove.HasValue == true){
+                                <p>@RequestItemDetails.DateApprove.Value.ToString("MMMM dd, yyyy")</p>
+                            }else{
+                                <p>-- --</p>
+                            }
+                        </div>
+                        <div>
+                            <label class="input-label">Approver</label>
+                            <p>@RequestItemDetails.Approver</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Date Completed</label>
+                            @if (RequestItemDetails?.DateCompleted.HasValue == true)
+                            {
+                                <p>@RequestItemDetails.DateCompleted.Value.ToString("MMMM dd, yyyy")</p>
+                            }
+                            else
+                            {
+                                <p>-- --</p>
+                            }
+                        </div>
+                        <div>
+                            <label class="input-label">Processor</label>
+                            @if (RequestItemDetails?.Process != null || RequestItemDetails?.Process != "")
+                            {
+                                <p>@RequestItemDetails.Process</p>
+                            }
+                            else
+                            {
+                                <p>-- --</p>
+                            }
+                        </div>
+                    </div>
+                    <br />
+
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                        <th style="width: 30%;">Item Description</th>
+                                        <th style="width: 10%;">Quantity</th>
+                                        <th style="width: 10%;">UOM</th>
+                                        <th style="width: 25%;">Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in RequestItemDetails.details)
+                                {
+                                    <tr>
+                                        <td>@item.ItemDescription</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.UOM</td>
+                                        <td>
+                                            <input style="width: 100%" type="text" class="input-form" @bind="item.Notes" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            @if (RequestItemDetails != null && RequestItemDetails.Status == "Preparing")
+            {
+                <button class="approve-button" @onclick="Prepared">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 5L19 12H7.37671M20 16H8L6 3H3M11 6L13 8L17 4M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Prepare
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string RequestDetails { get; set; } // Ensure this is public
+    [Parameter] public RequisitionHeader RequestItemDetails { get; set; } // Ensure this is public
+    [Parameter]
+    public RequisitionHeader Request { get; set; }
+
+    [Parameter] public EventCallback<bool> OnConfirm { get; set; }
+    [Parameter] public EventCallback<bool> OnCancel { get; set; }
+
+
+    private string ModalStyle => ShowModal ? "display: block;" : "display: none;";
+    private bool ShowModal { get; set; }
+
+    public void OpenModal()
+    {
+        ShowModal = true;
+        StateHasChanged(); // Update the UI
+    }
+
+    private void Close()
+    {
+        OnCancel.InvokeAsync(false);
+        ShowModal = false;
+        // CloseModal();
+    }
+
+    private void Confirm()
+    {
+        OnConfirm.InvokeAsync(true);
+        // CloseModal();
+    }
+
+    public async Task Prepared()
+    {
+        try
+        {
+            if (RequestItemDetails != null && RequestItemDetails.HeaderId > 0) // Ensure ID is valid
+            {
+                RequestItemDetails.Status = "Completed";
+
+                string connectionString = _config.GetConnectionString("DefaultConnection");
+
+                string updateHeaderQuery = @"
+                    UPDATE requisitionheaders
+                    SET Status = @Status,
+                        DateCompleted = @DateCompleted,
+                        Process = @Process
+                    WHERE HeaderId = @Id";
+
+                await _data.SaveData(updateHeaderQuery,
+                    new { 
+                        Status = RequestItemDetails.Status, 
+                        Id = RequestItemDetails.HeaderId, 
+                        DateCompleted = DateTime.UtcNow,
+                        Process = RequestItemDetails.User
+                    },
+                    connectionString);
+
+                string updateDetails = @"
+                    UPDATE requisitiondetails
+                    SET Notes = @Notes
+                    WHERE DetailId = @Id";
+
+                foreach(var item in RequestItemDetails.details)
+                {
+                    Console.WriteLine($"Updating DetailId: {item.DetailId}, Notes: {item.Notes}");
+                    
+                    await _data.SaveData(updateDetails,
+                        new { 
+                            Notes = item.Notes,
+                            Id = item.DetailId
+                        },
+                        connectionString);
+                }
+
+                await OnConfirm.InvokeAsync(true);
+
+                // Reload the page
+                _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
+
+                await SendEmailAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in Canceling Request: {ex.Message}");
+        }
+        finally
+        {
+            ShowModal = false;
+            StateHasChanged();
+        }
+    }
+
+    //Added 2/3/2025
+    private async Task SendEmailAsync()
+    {
+        var emailBody = new StringBuilder();
+        emailBody.AppendLine($"<h3>Hi Ms./Mr. {RequestItemDetails.RequestedBy}</h3>");
+        emailBody.AppendLine($"<p>Your request has been Complete. You can collect the supplies in the stockroom. Thank you!</p>");
+        emailBody.AppendLine($"<p><strong>Date of Request:</strong> {DateTime.Now.ToString("MM/dd/yyyy")}</p>");
+        emailBody.AppendLine($"<h4><a href='http://192.168.0.7:8484/#/supplies/requestlist' target='_blank'>View Request Details</a></h4>");
+        emailBody.AppendLine($"<p><i>This email is auto generated, please don't reply to this email.</i></p>");
+
+        var message = new MimeKit.MimeMessage();
+        message.From.Add(new MimeKit.MailboxAddress("Supplies Requisition", "mis@barbizonfashion.com"));
+        message.To.Add(new MimeKit.MailboxAddress($"{RequestItemDetails.RequestedBy}", "newbarbizon333@gmail.com"));
+        message.Subject = $"New Requisition (ID: {RequestItemDetails.HeaderId})";
+        message.Body = new MimeKit.TextPart("html")
+            {
+                Text = emailBody.ToString()
+            };
+
+        using var client = new MailKit.Net.Smtp.SmtpClient();
+        try
+        {
+            await client.ConnectAsync("smtp-relay.brevo.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("mis@barbizonfashion.com", "TwJrNP0BM9zvVHkt");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email Sending Failed: {ex.Message}");
+        }
+    }
+    
+}

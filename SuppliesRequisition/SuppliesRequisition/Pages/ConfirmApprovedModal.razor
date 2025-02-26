@@ -1,0 +1,233 @@
+@using SuppliesRequisition.Model
+@using SuppliesRequisition.Data
+@using static SuppliesRequisition.Pages.RequestList
+@using MimeKit;
+@using MailKit.Net.Smtp;
+@using System.Text
+
+@inject ApplicationDbContext _dbcontext
+@inject SAPService _sapService
+@inject IJSRuntime _runtime
+@inject IMyDataConnection _data
+@inject IConfiguration _config
+@inject NavigationManager _navigation
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .close-button {
+        border: none;
+        background-color: #fff;
+        color: #000;
+        border-radius: 2px;
+    }
+
+        .close-button:hover {
+            color: #fff;
+            background-color: #AA0061;
+        }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 1px solid #888;
+        width: 18%;
+    }
+
+    .yes-request-button {
+        padding: 2px 16px;
+        background-color: #fff;
+        border: 1px solid #AA0061;
+        color: #AA0061;
+        border-radius: 2px;
+    }
+
+        .yes-request-button:hover {
+            background-color: #AA0061;
+            color: white;
+        }
+
+    .no-request-button {
+        padding: 2px 16px;
+        background-color: #616161;
+        border: 1px solid #616161;
+        color: #fff;
+        border-radius: 2px;
+    }
+
+        .no-request-button:hover {
+            background-color: #fff;
+            color: #616161;
+        }
+
+    p {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+<div class="modal" style="@ModalStyle">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p class="upload-memorandum">
+                <span class="upload">Approve</span>
+                <span class="memorandum">Request</span>
+            </p>
+        </div>
+        <div class="modal-body">
+            @if (RequestItemDetails != null && RequestItemDetails.details != null)
+            {
+                <p>Are you sure you want to APPROVE <b>Request Number @RequestItemDetails.HeaderId</b> ?</p>
+            }
+        </div>
+        <div class="modal-footer">
+            <button @onclick="Confirm" class="yes-request-button">
+                Yes
+            </button>
+            <button @onclick="Close" class="no-request-button">
+                No
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RequisitionHeader RequestItemDetails { get; set; } // Ensure this is public
+    [Parameter] public EventCallback<bool> OnConfirm { get; set; }
+    [Parameter] public EventCallback<bool> OnCancel { get; set; }
+
+
+    private string ModalStyle => ShowModal ? "display: block;" : "display: none;";
+    private bool ShowModal { get; set; }
+
+    public void OpenModal()
+    {
+        ShowModal = true;
+        StateHasChanged(); // Update the UI
+    }
+
+    public void CloseModal()
+    {
+        OnCancel.InvokeAsync(false);
+    }
+
+    //Added 2/3/2025
+    private async Task Confirm()
+    {
+        try
+        {
+            string updateHeaderQuery = "";
+            if (RequestItemDetails != null && RequestItemDetails.HeaderId > 0) // Ensure ID is valid
+            {
+                @* RequestItemDetails.Status = "Preparing"; *@
+
+                string connectionString = _config.GetConnectionString("DefaultConnection");
+
+                if (RequestItemDetails.Position == "Approver")
+                {
+                    RequestItemDetails.Status = "Preparing";
+                    updateHeaderQuery = @"UPDATE requisitionheaders
+                                            SET Status = @Status, DateApprove = @DateApproved, Approver = @User
+                                            WHERE HeaderId = @Id";
+                }
+                else if (RequestItemDetails.Position == "Reviewer")
+                {
+                    RequestItemDetails.Status = "For Approval";
+                    updateHeaderQuery = $@"UPDATE requisitionheaders
+                                            SET Status = @Status, dateReview = @DateApproved, Reviewer = @User
+                                            WHERE HeaderId = @Id";
+                    Console.WriteLine($"Reviewer: {updateHeaderQuery}");
+                }
+
+                await _data.SaveData(updateHeaderQuery,
+                    new { Status = RequestItemDetails.Status, 
+                        Id = RequestItemDetails.HeaderId, 
+                        User = RequestItemDetails.User,
+                        DateApproved = DateTime.UtcNow },
+                    connectionString);
+
+                await OnConfirm.InvokeAsync(true);
+
+                // Reload the page
+                _navigation.NavigateTo(_navigation.Uri, forceLoad: true);
+
+                @* await SendEmailAsync(); *@
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in Approved Request: {ex.Message}");
+        }
+        finally
+        {
+            ShowModal = false;
+            StateHasChanged();
+        }
+    }
+
+    private void Close()
+    {
+        ShowModal = false;
+        StateHasChanged(); // Update the UI
+    }
+
+    //Added 2/3/2025
+    private async Task SendEmailAsync()
+    {
+        var emailBody = new StringBuilder();
+        emailBody.AppendLine($"<h3>Hi Ms./Mr. {RequestItemDetails.RequestedBy}</h3>");
+        emailBody.AppendLine($"<p>Your request has been Approved. Please wait another email for the releasing of your request. Thank you!</p>");
+        emailBody.AppendLine($"<p><strong>Date of Request:</strong> {DateTime.Now.ToString("MM/dd/yyyy")}</p>");
+        emailBody.AppendLine($"<h4><a href='http://192.168.0.7:8484/#/supplies/requestlist' target='_blank'>View Request Details</a></h4>");
+        emailBody.AppendLine($"<p><i>This email is auto generated, please don't reply to this email.</i></p>");
+
+        var message = new MimeKit.MimeMessage();
+        message.From.Add(new MimeKit.MailboxAddress("Supplies Requisition", "mis@barbizonfashion.com"));
+        message.To.Add(new MimeKit.MailboxAddress($"{RequestItemDetails.RequestedBy}", "newbarbizon333@gmail.com"));
+        message.To.Add(new MimeKit.MailboxAddress("Operation", "newbarbizon360@gmail.com"));
+        message.Subject = $"New Requisition (ID: {RequestItemDetails.HeaderId})";
+        message.Body = new MimeKit.TextPart("html")
+            {
+                Text = emailBody.ToString()
+            };
+
+        using var client = new MailKit.Net.Smtp.SmtpClient();
+        try
+        {
+            await client.ConnectAsync("smtp-relay.brevo.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("mis@barbizonfashion.com", "TwJrNP0BM9zvVHkt");
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Email Sending Failed: {ex.Message}");
+        }
+    }
+
+
+}

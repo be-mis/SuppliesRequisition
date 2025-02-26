@@ -1,0 +1,217 @@
+@using static SuppliesRequisition.Pages.RequestList
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal overlay styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .close-button {
+        border: none;
+        background-color: #fff;
+        color: #000;
+        border-radius: 2px;
+    }
+
+        .close-button:hover{
+            color: #fff;
+            background-color: #AA0061;
+        }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 1px solid #888;
+        width: 60%;
+    }
+
+    .cancel-request-button {
+        padding: 2px 16px;
+        background-color: #fff;
+        border: 1px solid #AA0061;
+        color: #AA0061;
+        border-radius: 2px;
+    }
+
+        .cancel-request-button:hover {
+            background-color: #AA0061;
+            color: white;
+        }
+    p {
+        margin-bottom: 0px !important;
+    }
+
+    .input-label {
+        font-size: 14px;
+        color: #7B7B7B;
+    }
+
+    .column-number-3{
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pending-status {
+        color: orange;
+    }
+
+    .preparing-status {
+        color: blue;
+    }
+
+    .completed-status {
+        color: #00A3AD;
+    }
+
+    .denied-status {
+        color: #AA0061;
+    }
+</style>
+
+<div class="modal" style="@ModalStyle">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p class="upload-memorandum">
+                <span class="upload">Request</span>
+                <span class="memorandum">Details</span>
+            </p>
+            <button class="close-button" @onclick="Close">
+                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            @if (RequestItemDetails != null && RequestItemDetails.Items != null)
+            {
+
+                <div style="padding: 20px;">
+                    <div class="column-number-3">
+                        <div>
+                            <label class="input-label">Requestor Name</label>
+                            <p>@RequestItemDetails.RequestorName</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Date of Request</label>
+                            <p>@RequestItemDetails.DateRequested</p>
+                        </div>
+                        <div>
+                            <label class="input-label">Status</label>
+                            <p class ="@(RequestItemDetails.Status.ToLower())-status ">@RequestItemDetails.Status</p>
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Item Description</th>
+                                <th style="width: 10%;">Quantity</th>
+                                <th style="width: 10%;">UOM</th>
+                                @* <th style="width: 30%;">Remarks</th> *@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in RequestItemDetails.Items)
+                            {
+                                <tr>
+                                    <td>@item.ItemDescription</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.UOM</td>
+                                    @* <td>@item.Consumption</td> *@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button @onclick="Confirm" class="approve-button">
+                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                fill-rule: evenodd;
+                            }
+                        </style>
+                    </defs>
+                    <path id="cancel" class="cls-1" d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z" transform="translate(-924 -96)" />
+                </svg>
+                Approve
+            </button>
+            <button @onclick="Confirm" class="cancel-request-button">
+                <svg fill="currentColor" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                fill-rule: evenodd;
+                            }
+                        </style>
+                    </defs>
+                    <path id="cancel" class="cls-1" d="M936,120a12,12,0,1,1,12-12A12,12,0,0,1,936,120Zm0-22a10,10,0,1,0,10,10A10,10,0,0,0,936,98Zm4.706,14.706a0.951,0.951,0,0,1-1.345,0l-3.376-3.376-3.376,3.376a0.949,0.949,0,1,1-1.341-1.342l3.376-3.376-3.376-3.376a0.949,0.949,0,1,1,1.341-1.342l3.376,3.376,3.376-3.376a0.949,0.949,0,1,1,1.342,1.342l-3.376,3.376,3.376,3.376A0.95,0.95,0,0,1,940.706,112.706Z" transform="translate(-924 -96)" />
+                </svg>
+                Denied
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string RequestDetails { get; set; } // Ensure this is public
+    [Parameter] public RequestItem RequestItemDetails { get; set; } // Ensure this is public
+    [Parameter]
+    public RequestItem Request { get; set; }
+
+    [Parameter] public EventCallback<bool> OnConfirm { get; set; }
+    [Parameter] public EventCallback<bool> OnCancel { get; set; }
+
+
+    private string ModalStyle => ShowModal ? "display: block;" : "display: none;";
+    private bool ShowModal { get; set; }
+
+    public void OpenModal()
+    {
+        ShowModal = true;
+        StateHasChanged(); // Update the UI
+    }
+
+    public void CloseModal()
+    {
+        //OnCancel.InvokeAsync(false);
+        CloseModal();
+    }
+
+    private void Confirm()
+    {
+        OnConfirm.InvokeAsync(true);
+        CloseModal();
+    }
+    private void Close()
+    {
+        ShowModal = false;
+        StateHasChanged(); // Update the UI
+    }
+}

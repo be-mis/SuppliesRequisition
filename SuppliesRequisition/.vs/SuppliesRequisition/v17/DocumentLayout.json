@@ -1,0 +1,130 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "Z:\\PROJECTS\\SuppliesRequisition\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\pages\\confirmdeniedmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\pages\\confirmdeniedmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\pages\\confirmcancellationmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\pages\\confirmcancellationmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\pages\\confirmapprovedmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\pages\\confirmapprovedmodal.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\pages\\requestlist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\pages\\requestlist.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|z:\\projects\\suppliesrequisition\\suppliesrequisition\\data\\sapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D013370C-E2A1-490A-B5EA-A37EE9CB0688}|SuppliesRequisition\\SuppliesRequisition.csproj|solutionrelative:suppliesrequisition\\data\\sapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Program.cs",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Program.cs",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Program.cs",
+              "RelativeToolTip": "SuppliesRequisition\\Program.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABsAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T10:52:48.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ConfirmDeniedModal.razor",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmDeniedModal.razor",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Pages\\ConfirmDeniedModal.razor",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmDeniedModal.razor",
+              "RelativeToolTip": "SuppliesRequisition\\Pages\\ConfirmDeniedModal.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T10:51:42.003Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ConfirmCancellationModal.razor",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmCancellationModal.razor",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Pages\\ConfirmCancellationModal.razor",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmCancellationModal.razor",
+              "RelativeToolTip": "SuppliesRequisition\\Pages\\ConfirmCancellationModal.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T10:51:35.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConfirmApprovedModal.razor",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmApprovedModal.razor",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Pages\\ConfirmApprovedModal.razor",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\ConfirmApprovedModal.razor",
+              "RelativeToolTip": "SuppliesRequisition\\Pages\\ConfirmApprovedModal.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T10:51:22.33Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SAPService.cs",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Data\\SAPService.cs",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Data\\SAPService.cs",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Data\\SAPService.cs",
+              "RelativeToolTip": "SuppliesRequisition\\Data\\SAPService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T10:50:56.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "RequestList.razor",
+              "DocumentMoniker": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\RequestList.razor",
+              "RelativeDocumentMoniker": "SuppliesRequisition\\Pages\\RequestList.razor",
+              "ToolTip": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\Pages\\RequestList.razor",
+              "RelativeToolTip": "SuppliesRequisition\\Pages\\RequestList.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-01-30T10:50:26.771Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
