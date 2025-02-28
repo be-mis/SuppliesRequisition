@@ -1149,6 +1149,88 @@
           "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
         }
       ]
+    },
+    {
+      "Route": "js/postMessageHandler.js",
+      "AssetFile": "js/postMessageHandler.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "635"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Dec 2024 03:38:26 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE="
+        }
+      ]
+    },
+    {
+      "Route": "js/postMessageHandler.ze2lhwjfxn.js",
+      "AssetFile": "js/postMessageHandler.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "635"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Dec 2024 03:38:26 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ze2lhwjfxn"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE="
+        },
+        {
+          "Name": "label",
+          "Value": "js/postMessageHandler.js"
+        }
+      ]
     }
   ]
 }

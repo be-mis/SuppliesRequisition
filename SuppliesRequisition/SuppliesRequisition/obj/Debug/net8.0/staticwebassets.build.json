@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fFnX34H7CZyWl8B0OeNZEU6pRcoa3svPabW9dz5LtRo=",
+  "Hash": "kKTPA0eMGVeWUwTX/BjtjeU4RcJeAA9/0vWj3zGi8so=",
   "Source": "SuppliesRequisition",
   "BasePath": "_content/SuppliesRequisition",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "SuppliesRequisition\\wwwroot",
       "Source": "SuppliesRequisition",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Computed",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "SuppliesRequisition#[.{fingerprint}]?.styles.css",
       "AssetKind": "All",
@@ -35,13 +35,13 @@
       "Integrity": "JrEWqIpYZKrG1vnS4Gb0y+mYo0rX7ZdskoV1o4wIO8Y=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css"
+      "OriginalItemSpec": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Computed",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "SuppliesRequisition#[.{fingerprint}]!.bundle.scp.css",
       "AssetKind": "All",
@@ -56,13 +56,13 @@
       "Integrity": "JrEWqIpYZKrG1vnS4Gb0y+mYo0rX7ZdskoV1o4wIO8Y=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css"
+      "OriginalItemSpec": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/bootstrap/bootstrap.min#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -80,10 +80,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/bootstrap/bootstrap.min.css#[.{fingerprint}]?.map",
       "AssetKind": "All",
@@ -101,136 +101,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min#[.{fingerprint}]?.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "cmapd0fi15",
-      "Integrity": "BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.eot",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "0uw8dim9nl",
-      "Integrity": "OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.otf",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "wk8x8xm0ah",
-      "Integrity": "sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.svg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "sjnzgf7e1h",
-      "Integrity": "+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.ttf",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "ll5grcv8wv",
-      "Integrity": "p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
-      "BasePath": "_content/SuppliesRequisition",
-      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.woff",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "Fingerprint": "h4d0pazwgy",
-      "Integrity": "cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI=",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
-    },
-    {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "SourceId": "SuppliesRequisition",
-      "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/open-iconic/FONT-LICENSE#[.{fingerprint}]?",
       "AssetKind": "All",
@@ -248,10 +122,136 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "cmapd0fi15",
+      "Integrity": "BJ/G+e+y7bQdrYkS2RBTyNfBHpA9IuGaPmf9htub5MQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.eot",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0uw8dim9nl",
+      "Integrity": "OK3poGPgzKI2NzNgP07XMbJa3Dz6USoUh/chSkSvQpc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.otf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wk8x8xm0ah",
+      "Integrity": "sDUtuZAEzWZyv/U1xl/9D3ehyU69JE+FvAcu5HQ+/a0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sjnzgf7e1h",
+      "Integrity": "+P1oQ5jPzOVJGC52E1oxGXIXxxCyMlqy6A9cNxGYzVk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.ttf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ll5grcv8wv",
+      "Integrity": "p+RP8CV3vRK1YbIkNzq3rPo1jyETPnR07ULb+HVYL8w=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "css/open-iconic/font/fonts/open-iconic#[.{fingerprint}]?.woff",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "h4d0pazwgy",
+      "Integrity": "cZPqVlRJfSNW0KaQ4+UPOXZ/v/QzXlejRDwUNdZIofI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/open-iconic/ICON-LICENSE#[.{fingerprint}]?",
       "AssetKind": "All",
@@ -269,10 +269,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/open-iconic/README#[.{fingerprint}]?.md",
       "AssetKind": "All",
@@ -290,10 +290,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "css/site#[.{fingerprint}]?.css",
       "AssetKind": "All",
@@ -311,10 +311,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
       "SourceId": "SuppliesRequisition",
       "SourceType": "Discovered",
-      "ContentRoot": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
       "BasePath": "_content/SuppliesRequisition",
       "RelativePath": "favicon#[.{fingerprint}]?.ico",
       "AssetKind": "All",
@@ -330,12 +330,33 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\js\\postMessageHandler.js",
+      "SourceId": "SuppliesRequisition",
+      "SourceType": "Discovered",
+      "ContentRoot": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\",
+      "BasePath": "_content/SuppliesRequisition",
+      "RelativePath": "js/postMessageHandler#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ze2lhwjfxn",
+      "Integrity": "hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\postMessageHandler.js"
     }
   ],
   "Endpoints": [
     {
       "Route": "css/bootstrap/bootstrap.min.bpk8xqwxhs.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -380,7 +401,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -417,7 +438,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css.8inm30yfxf.map",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -462,7 +483,7 @@
     },
     {
       "Route": "css/bootstrap/bootstrap.min.css.map",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -498,8 +519,90 @@
       ]
     },
     {
+      "Route": "css/open-iconic/FONT-LICENSE",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4103"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 30 Jan 2025 10:37:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
+        }
+      ]
+    },
+    {
+      "Route": "css/open-iconic/FONT-LICENSE.48tmkg660f",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4103"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 30 Jan 2025 10:37:20 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "48tmkg660f"
+        },
+        {
+          "Name": "label",
+          "Value": "css/open-iconic/FONT-LICENSE"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
+        }
+      ]
+    },
+    {
       "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.cmapd0fi15.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -544,7 +647,7 @@
     },
     {
       "Route": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -581,7 +684,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.0uw8dim9nl.eot",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -626,7 +729,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.eot",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -663,7 +766,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.h4d0pazwgy.woff",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -708,7 +811,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.ll5grcv8wv.ttf",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -753,7 +856,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.otf",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -790,7 +893,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.sjnzgf7e1h.svg",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -835,7 +938,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.svg",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -872,7 +975,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.ttf",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -909,7 +1012,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.wk8x8xm0ah.otf",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -954,7 +1057,7 @@
     },
     {
       "Route": "css/open-iconic/font/fonts/open-iconic.woff",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -990,90 +1093,8 @@
       ]
     },
     {
-      "Route": "css/open-iconic/FONT-LICENSE",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4103"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 30 Jan 2025 10:37:20 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
-        }
-      ]
-    },
-    {
-      "Route": "css/open-iconic/FONT-LICENSE.48tmkg660f",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "4103"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "application/octet-stream"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 30 Jan 2025 10:37:20 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "48tmkg660f"
-        },
-        {
-          "Name": "label",
-          "Value": "css/open-iconic/FONT-LICENSE"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-jA4J4h/k76zVxbFKEaWwFKJccmO0voOQ1DbUW+5YNlI="
-        }
-      ]
-    },
-    {
       "Route": "css/open-iconic/ICON-LICENSE",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1110,7 +1131,7 @@
     },
     {
       "Route": "css/open-iconic/ICON-LICENSE.4dwjve0o0b",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1155,7 +1176,7 @@
     },
     {
       "Route": "css/open-iconic/README.8h4oiah9s0.md",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1200,7 +1221,7 @@
     },
     {
       "Route": "css/open-iconic/README.md",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\open-iconic\\README.md",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1237,7 +1258,7 @@
     },
     {
       "Route": "css/site.1fpfb6x0uo.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1282,7 +1303,7 @@
     },
     {
       "Route": "css/site.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1319,7 +1340,7 @@
     },
     {
       "Route": "favicon.61n19gt1b8.ico",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1364,7 +1385,7 @@
     },
     {
       "Route": "favicon.ico",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\favicon.ico",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1400,8 +1421,90 @@
       ]
     },
     {
+      "Route": "js/postMessageHandler.js",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\js\\postMessageHandler.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "635"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Dec 2024 03:38:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE="
+        }
+      ]
+    },
+    {
+      "Route": "js/postMessageHandler.ze2lhwjfxn.js",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\wwwroot\\js\\postMessageHandler.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "635"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 16 Dec 2024 03:38:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ze2lhwjfxn"
+        },
+        {
+          "Name": "label",
+          "Value": "js/postMessageHandler.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-hd+n7CjoMVjf/+SitY7gy2iNhDR0O2ulMYsiQd7JVVE="
+        }
+      ]
+    },
+    {
       "Route": "SuppliesRequisition.bundle.scp.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1438,7 +1541,7 @@
     },
     {
       "Route": "SuppliesRequisition.iyg0hux87f.bundle.scp.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\SuppliesRequisition.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1483,7 +1586,7 @@
     },
     {
       "Route": "SuppliesRequisition.iyg0hux87f.styles.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -1528,7 +1631,7 @@
     },
     {
       "Route": "SuppliesRequisition.styles.css",
-      "AssetFile": "Z:\\PROJECTS\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
+      "AssetFile": "c:\\Users\\Jake\\Documents\\GitHub\\SuppliesRequisition\\SuppliesRequisition\\SuppliesRequisition\\obj\\Debug\\net8.0\\scopedcss\\bundle\\SuppliesRequisition.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
